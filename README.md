@@ -1,4 +1,9 @@
-hello-world
-===========
+**************************   
+#Repository's name: php-code     
+**************************   
+***This Repository will save my some php code, maybe wll include test, demo, log as so on.***   
+***I hope it will help me***
 
-The Hello World project is a time-honored tradition in computer programming, It is a simple exercise that gets you started when learning something new. Let’s get started with GitHub!
+[wangxb](http://www.cnblogs.com/wxb0328/)
+
+

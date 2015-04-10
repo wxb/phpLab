@@ -13,7 +13,7 @@ function send_code($tel) {
                 $recipient = '+81'.trim($tel);
                 $text = 'hello! Verification code: ';//.$code;
                
-                $url = 'https://api.sms-smartlink.jp/smsorder.php?username=carevonet&password=Uy9E7MtK&recipient=';//.$recipient.'&text='.$text;
+                $url = 'https://api.sms-xxxxx.jp/xxx.php?username=******&password=*****&recipient=';//.$recipient.'&text='.$text;
                 //$url = 'http://www.baidu.com';
                 $ch = curl_init($url);
                 
@@ -29,15 +29,15 @@ function send_code($tel) {
                 echo $res; 
 
         }
-//echo send_request('https://api.sms-smartlink.jp/smsorder.php','username=carevonet&password=Uy9E7MtK&recipient=+8108035878618&text=hello! Verification code: 195522');
-send_code('08035878618');
+//echo send_request('https://api.sms-xxxxx.jp/xxxxx.php','username=****&password=******&recipient=+******&text=hello! Verification code: 195522');
+send_code('******');
 /*
 print_r($info);
 echo $res; 
 上面两项输出结果
 Array
 (
-    [url] => https://api.sms-smartlink.jp/smsorder.php?username=carevonet&password=Uy9E7MtK&recipient=+8108035878618&text=hello! Verification code: 
+    [url] => https://api.sms-xxxxx.jp/xxxxx.php?username=*****&password=*****&recipient=+*****&text=hello! Verification code: 
     [content_type] => text/html; charset=utf-8
     [http_code] => 200  
     [header_size] => 391

@@ -17,9 +17,9 @@
   </head>
   <body>
     <h1>你好，世界！</h1>
-    <div style="width: 500px;" id="dropzone">
-      
-      <form action="upload.php" class="dropzone " id="my_dropzone">
+    <div style="width: 500px; height: 200px;" id="dropzone">
+
+      <form action="upload.php" class="dropzone dz-clickable" id="main_dropzone">
         <div class="dz-message">
           Drag Drop Image Here
         </div>
@@ -28,11 +28,20 @@
         </div>
       </form>
       <button id="submit-all">Submit all files</button>
+
     </div>
     
-
+    <script src="./jquery-1.11.2.js"></script>
     <script src="./dropzone.js"></script>
     <script>
+      Dropzone.autoDiscover = false
+      $("#main_dropzone").dropzone({
+        url: 'upload.php',
+        method: 'post',
+        paramName: 'mainfile',
+        maxFiles: 1
+      });
+      /*
       Dropzone.options.myDropzone = {
         url: 'upload.php',
         method: 'post',
@@ -46,6 +55,7 @@
         }
 
       }
+      */
     </script>
   </body>
 </html>

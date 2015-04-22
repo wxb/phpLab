@@ -1,0 +1,33 @@
+[ 2015-03-05T00:22:07+08:00 ] 127.0.0.1 /pdfApp/Home/index/score.php
+ERR: 非法操作:score.php
+
+[ 2015-03-05T00:24:34+08:00 ] 127.0.0.1 /pdfApp/index.php/Home/Index/score.php
+ERR: 非法操作:score.php
+
+[ 2015-03-05T00:25:19+08:00 ] 127.0.0.1 /pdfApp/index.php/Home/Index/score.php
+ERR: 非法操作:score.php
+
+[ 2015-03-05T00:25:24+08:00 ] 127.0.0.1 /pdfApp/index.php/Home/Index/score.php
+ERR: 非法操作:score.php
+
+[ 2015-03-05T00:28:19+08:00 ] 127.0.0.1 /pdfApp/index.php/Home/Index/score.php
+ERR: 非法操作:score.php
+
+[ 2015-03-05T21:46:09+08:00 ] 127.0.0.1 /pdfApp/index.php/Home/Index/indexscore
+ERR: 非法操作:indexscore
+
+[ 2015-03-05T22:58:52+08:00 ] 127.0.0.1 /pdfApp/index.php/Home/Index/score
+ERR: 模板不存在:./App/Home/View/Index/nullError.html
+
+[ 2015-03-05T23:07:41+08:00 ] 127.0.0.1 /pdfApp/index.php/Home/Index/score
+ERR: Think\Controller:assgin方法不存在！
+
+[ 2015-03-05T23:09:20+08:00 ] 127.0.0.1 /pdfApp/index.php/Home/Index/index.tpl
+ERR: 非法操作:index.tpl
+
+[ 2015-03-05T23:10:37+08:00 ] 127.0.0.1 /pdfApp/index.php/Home/Index/index.tpl
+ERR: 非法操作:index.tpl
+
+[ 2015-03-05T23:55:24+08:00 ] 127.0.0.1 /pdfApp/index.php/Home/Index/rtf.php
+ERR: 非法操作:rtf.php
+

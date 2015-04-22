@@ -1,0 +1,42 @@
+<html>
+  <body>
+     <h1 align="center">
+            <img src="__IMG__/rosette.gif" alt="" />
+            Congratulations!
+            <img src="__IMG__/rosette.gif" alt="" /></h1>
+
+	<p>Well done {$name}, with a score of {$score}%,
+            you have passed the exam.</p>
+
+      <p>Please click here to download your certificate as
+             a Microsoft Word (RTF) file.</p>
+            <form action="rtf.php" method="post">
+            <div align="center">
+            <input type="image" src="__IMG__/certificate.gif" border="0">
+            </div>
+            <input type="hidden" name="score" value="{$score}"/>
+            <input type="hidden" name="name" value="{$name}"/>
+            </form>
+
+            <p>Please click here to download your certificate as
+            a Portable Document Format (PDF) file.</p>
+            <form action="pdf.php" method="post">
+            <div align="center">
+            <input type="image" src="__IMG__/certificate.gif" border="0">
+            </div>
+            <input type="hidden" name="score" value="{$score}"/>
+            <input type="hidden" name="name" value="{$name}"/>
+            </form>
+
+            <p>Please click here to download your certificate as
+            a Portable Document Format (PDF) file generated with PDFLib.</p>
+            <form action="pdflib" method="post">
+            <div align="center">
+            <input type="image" src="__IMG__/certificate.gif" border="0">
+            </div>
+            <input type="hidden" name="score" value="{$score}"/>
+            <input type="hidden" name="name" value="{$name}"/>
+            </form>
+  </body>
+</html>
+ 

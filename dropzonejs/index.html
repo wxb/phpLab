@@ -20,17 +20,20 @@
     <div style="width: 500px; height: 200px;" id="dropzone">
 
       <form action="upload.php" class="dropzone dz-clickable" id="main_dropzone">
+        <!--
         <div class="dz-message">
           Drag Drop Image Here
         </div>
+        -->
         <div class="fallback">
-          <input name="userfile" type="file" multiple />
+          <input name="userfile" type="file" multiple="multiple" />
         </div>
+        
       </form>
       <button id="submit-all">Submit all files</button>
 
     </div>
-    
+    <div style="display:none;" id="preview-template"></div>
     <script src="./jquery-1.11.2.js"></script>
     <script src="./dropzone.js"></script>
     <script>
@@ -39,23 +42,30 @@
         url: 'upload.php',
         method: 'post',
         paramName: 'mainfile',
-        maxFiles: 1
-      });
-      /*
-      Dropzone.options.myDropzone = {
-        url: 'upload.php',
-        method: 'post',
-        paramName: 'mainfile',
-        maxFilesize： 10,
-        accept: function(file, done) {
-          if (file.name == "justinbieber.png") {
-            done("Naha, you don't.");
-          }
-          else { done(); }
+        maxFiles: 2,
+        maxFilesize: 0.1,
+        addRemoveLinks: true,
+        dictCancelUpload: "Cancel",
+        uploadMultiple: true,
+        //previewTemplate: document.querySelector('#preview-template').innerHTML,
+        //forceFallback: true, 这个选项设置为true时，将强制所有所有浏览器都使用fallback，也就是手册中说的对测试很有帮助
+        dictDefaultMessage: 'Drag Drop Image Here',
+        //dictFallbackMessage: 'ssss',
+        //acceptedFiles: image/*,
+        fallback: function(){
+          //alert();
+        },
+        init: function() {
+            this.on("success", function(file) {
+                console.log("File " + file.name + "uploaded");
+                this.removeFile(file);
+            });
+            this.on("removedfile", function(file) {
+                console.log("File " + file.name + "removed");
+            });
         }
-
-      }
-      */
+      });
+      
     </script>
   </body>
 </html>

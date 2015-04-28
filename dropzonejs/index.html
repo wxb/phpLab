@@ -42,23 +42,37 @@
         url: 'upload.php',
         method: 'post',
         paramName: 'mainfile',
-        maxFiles: 2,
-        maxFilesize: 0.1,
-        addRemoveLinks: true,
+        maxFiles: 20,
+        parallelUploads: 100,
+        thumbnailWidth: 200,
+        thumbnailHeight: 200,
+        maxFilesize: 10,
+        autoProcessQueue: false,
+        //addRemoveLinks: true,
         dictCancelUpload: "Cancel",
         uploadMultiple: true,
         //previewTemplate: document.querySelector('#preview-template').innerHTML,
         //forceFallback: true, 这个选项设置为true时，将强制所有所有浏览器都使用fallback，也就是手册中说的对测试很有帮助
-        dictDefaultMessage: 'Drag Drop Image Here',
+        //dictDefaultMessage: 'Drag Drop Image Here',
         //dictFallbackMessage: 'ssss',
         //acceptedFiles: image/*,
         fallback: function(){
           //alert();
         },
         init: function() {
+             var submitButton = document.querySelector("#submit-all")
+        myDropzone = this; // closure
+
+    submitButton.addEventListener("click", function() {
+      myDropzone.processQueue(); // Tell Dropzone to process all queued files.
+    });
+
+
             this.on("success", function(file) {
                 console.log("File " + file.name + "uploaded");
-                this.removeFile(file);
+                //this.removeFile(file);
+                console.log(myDropzone.getAcceptedFiles());
+                console.log(this.getQueuedFiles());
             });
             this.on("removedfile", function(file) {
                 console.log("File " + file.name + "removed");

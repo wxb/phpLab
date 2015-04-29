@@ -1,9 +1,9 @@
+ 
+##php-code  
 **************************   
-#Repository's name: php-code     
-**************************   
-***This Repository will save my some php code, maybe wll include test, demo, log as so on.***   
-***I hope it will help me***
+**php-code库主要是作为日常工作学习中备份php相关的比较有用的php代码.**   
 
-[wangxb](http://www.cnblogs.com/wxb0328/)
+
+[wangxb博客](http://www.cnblogs.com/wxb0328/)
 
 

@@ -7,6 +7,9 @@ class PdoMysql{
     public static $dbVersion = null; // 保存数据库版本
     public static $isConn = false;   // 是否连接成功
     public static $PDOStmt = null;   // 保存PDOStatment对象
+    public static $sqlStr = null;    // 保存查询sql
+    public static $errInfo = null;   // 保存sql执行的错误信息
+
 
     public function __construct($dbConfig=''){
         if(!class_exists('PDO')){
@@ -21,7 +24,7 @@ class PdoMysql{
                             'database' => DB_NAME,
                             'port'     => DB_PORT,
                             'dbtype'   => DB_TYPE,
-                            'options'   => DB_OPTIONS,
+                            'charset'  => DB_CHARSET,
                             'dsn'      => DB_TYPE.':host='.DB_HOST.';dbname='.DB_NAME
                         );
         }
@@ -60,13 +63,47 @@ class PdoMysql{
      * 获取所有字段方法
      **/
     public static function getAll($sql=''){
-        if(!empty($sql)){
-            self::query();
-        }
+        self::query($sql);
         $result = self::$PDOStmt->fetchAll(constant('PDO::FETCH_ASSOC'));
         return $result;
     }
     
+    public static function free(){
+        self::$PDOStmt = null;
+    }
+
+    public static function query($sql=''){
+        $link = self::$pdo_link;
+        if(!$link) return false;
+        // 判断是否由之前的结果集，如果有的话先释放
+        if(!empty(self::$PDOStmt)) self::free();
+        self::$sqlStr = $sql;
+        self::$PDOStmt = self::$pdo_link->prepare(self::$sqlStr);
+        self::$PDOStmt->execute();
+        // 这里我们可以使用try/catch 来抛出我们的错误，也可以使用pdo中的errorInof,errorCode方法输出错我信息
+        // 我们使用我们自定义的方法来输出我们的错误信息
+       self::throwPdoError();
+    }
+    
+    /*
+     * 自定义pdo处理错误信息输出方法
+     */
+    public static function throwPdoError(){
+        $errObj = empty(self::$PDOStmt) ? self::$pdo_link : self::$PDOStmt;
+        $arrError = $errObj->errorInfo();
+        // 检查是否传进来了sql语句
+        if('' == self::$sqlStr){
+            self::throw_exception('sql是空，没有可执行的sql语句');
+            return false;
+        }
+        // 00000 是MySQL返回正确执行的状态码
+        if('00000' != $arrError[0]){
+            self::$errInfo = 'SQL STATUS: '.$arrError[0].'<> ERROR CODE:'.$arrError[1].'<> ERROR INFOMETION:'.$arrError[2];
+            self::throw_exception(self::$errInfo);
+            return false;
+        }
+        
+    }
     /*
      * 自定义错误处理函数
      */
@@ -74,3 +111,10 @@ class PdoMysql{
         echo '<div style="color:red">'.$msg.'</div>';
     }
 }
+
+require('./config.pdomysql.php');
+$pdomysql = new PdoMysql();
+$sql = 'SELECT * FROM user';
+print_r($pdomysql->getAll($sql));
+
+

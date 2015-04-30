@@ -58,6 +58,9 @@ class HttpRequest implements proto {
 			return false;
 		}
 		$this->url = parse_url($url);
+		if(!isset($this->url['query'])) {
+			$this->url['query'] = '';
+		}
 		if(!isset($this->url['port'])) {
 			$this->url['port'] = $this->port;
 		}
@@ -67,7 +70,7 @@ class HttpRequest implements proto {
 
 	// 构造请求行信息
 	protected function setLine($method) {
-		$this->line[0] = $method.' '.$this->url['path'].' '.$this->version;
+		$this->line[0] = $method.' '.$this->url['path'].'?'.$this->url['query'].' '.$this->version;
 	}
 
 	// 构造请求头信息
@@ -76,8 +79,8 @@ class HttpRequest implements proto {
 	}
 
 	// 构造请求主体信息
-	protected function setBody() {
-
+	protected function setBody($body) {
+		$this->body[] = http_build_query($body);
 	}
 
 	// 连接url
@@ -86,39 +89,44 @@ class HttpRequest implements proto {
 	}
 
 	// get请求接口
-	public function get($url = null) {
-		if(!$this->handleURL($url) && empty($this->url)) {
-			return false;
-		}
+	public function get() {
 		$this->setLine('GET');
 		$this->request();
 		return $this->response;
 	}
 
 	// post请求接口
-	public function post() {
+	public function post($body = array()) {
+		// 设置请求行 POST请求
+		$this->setLine('POST');
+		$this->setBody($body);
+		// 计算 Content-length
+		$this->setHeader('Content-length: '.strlen($this->body[0]));
+		// 设置 Content-type
+		$this->setHeader('Content-type: application/x-www-form-urlencoded');
+		$this->request();
 
+		return $this->response;
 	}
 
 	// 真正请求
 	protected function request() {
 		// 把请求行、请求头信息、主体信息 都放在一个数组中，便于拼接
 		$req = array_merge($this->line,$this->header,array(''),$this->body,array(''));
-		//print_r($req);
 		$req = implode(self::CRLF, $req);
-		//echo $req;
 		$res = fwrite($this->fhandle, $req);
-		//if($res) {
+		// 方法一
 		/*
+		if($res) {
 			while(!feof($this->fhandle)) {
 				$this->response .= fread($this->fhandle, 1024);
 				
 			}
+		}
 		 */
-			$this->response = stream_get_contents($this->fhandle);
-		//}
+		// 方法二
+		$this->response = stream_get_contents($this->fhandle);
 		//
-		//$this->response = stream_get_contents($this->fhandle);
 		$this->close(); //　关闭连接	
 		//echo $this->response;
 	}
@@ -129,26 +137,35 @@ class HttpRequest implements proto {
 	}
 }
 /*
- * 当我利用上述代码给另一台服务器发送http请求时，发现，如果服务器处理请求时间过长，本地的PHP会中断请求，即所谓的超时中断，
- * 第一个怀疑的是PHP本身执行时间的超过限制，但想想也不应该，因为老早就按照这篇文章设置了“PHP执行时间限制”
- * （【推荐】PHP上传文件大小限制大全 ），仔细琢磨，想想，应该是http请求本身的一个时间限制，
- * 于是乎，就想到了怎么给http请求时间限制搞大一点。。。。。。查看PHP手册，果真有个参数 “ timeout ”，
- * 默认不知道多大，当把它的值设大一点，问题得已解决
+ * 当我利用上述代码给另一台服务器发送http请求时，发现，如果服务器处理请求时间过长，本地的PHP会中断请求，即所谓的超时中断，第一个怀疑的是PHP本身执行时间的超过限制，但想想也不应该，因为老早就按照这篇文章设置了“PHP执行时间限制”（【推荐】PHP上传文件大小限制大全 ），仔细琢磨，想想，应该是http请求本身的一个时间限制，于是乎，就想到了怎么给http请求时间限制搞大一点。。。。。。查看PHP手册，果真有个参数 “ timeout ”，默认不知道多大，当把它的值设大一点，问题得已解决
  * 当然，如果我们不想修改配置文件，也可以使用这个函数，0 表示 没有时间方面的限制
  *
  * set_time_limit — 设置脚本最大执行时间
  */
 set_time_limit(0);
-$url = 'http://blog.csdn.net/heiyeshuwu/article/details/6920880';
+//$url = 'http://blog.csdn.net/heiyeshuwu/article/details/6920880';
 //$url = 'http://localhost/phpinfo.php';
 //$url = 'http://www.cnblogs.com/yimiao/archive/2011/10/28/2227603.html';
 //$url = 'http://news.163.com/14/1126/04/ABUV0M4T00014AED.html';
 //$url = 'http://www.w3school.com.cn/htmldom/dom_methods.asp';
 //$url = 'http://news.163.com/14/1126/06/ABV5V5IE00014SEH.html';
 //$url = 'http://www.cnblogs.com/qingling/archive/2013/09/02/3296959.html';
+//$url = 'http://localhost/1.php';
+$url = 'http://blog.csdn.net/Ghostrider_wxb/comment/submit?id=19775089';
 $http = new HttpRequest($url);
-$result = $http->get();
+/*
+ * 发送 GET 请求
+ * $result = $http->get();
+ * echo $result;
+ */
+$str = str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789');
+$tit = substr($str,0,5);
+$con = substr($str,6,8);
+$result = $http->post(array('commentid'=>'','content'=>$con,'replyId'=>''));
+
+
+	
 echo $result;
-//print_r($http);
+
 
 ?>

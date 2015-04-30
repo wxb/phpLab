@@ -85,11 +85,10 @@ class PdoMysql{
         if(!empty(self::$PDOStmt)) self::free();
         self::$sqlStr = $sql;
         self::$PDOStmt = self::$pdo_link->prepare(self::$sqlStr);
-        $status = self::$PDOStmt->execute();
+        self::$PDOStmt->execute();
         // 这里我们可以使用try/catch 来抛出我们的错误，也可以使用pdo中的errorInof,errorCode方法输出错我信息
         // 我们使用我们自定义的方法来输出我们的错误信息
        self::throwPdoError();
-        return $status;
     }
     
     /*

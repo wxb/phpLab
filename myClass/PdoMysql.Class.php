@@ -68,10 +68,16 @@ class PdoMysql{
         return $result;
     }
     
+    /*
+     * 释放PDOStatment对象
+     */
     public static function free(){
         self::$PDOStmt = null;
     }
 
+    /*
+     * 执行sql查询 
+     */
     public static function query($sql=''){
         $link = self::$pdo_link;
         if(!$link) return false;
@@ -79,10 +85,11 @@ class PdoMysql{
         if(!empty(self::$PDOStmt)) self::free();
         self::$sqlStr = $sql;
         self::$PDOStmt = self::$pdo_link->prepare(self::$sqlStr);
-        self::$PDOStmt->execute();
+        $status = self::$PDOStmt->execute();
         // 这里我们可以使用try/catch 来抛出我们的错误，也可以使用pdo中的errorInof,errorCode方法输出错我信息
         // 我们使用我们自定义的方法来输出我们的错误信息
        self::throwPdoError();
+        return $status;
     }
     
     /*
@@ -112,7 +119,10 @@ class PdoMysql{
     }
 }
 
+// 引入数据库配置常量
 require('./config.pdomysql.php');
+
+// 测试
 $pdomysql = new PdoMysql();
 $sql = 'SELECT * FROM user';
 print_r($pdomysql->getAll($sql));

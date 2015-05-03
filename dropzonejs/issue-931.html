@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dropzonejs Template</title>
+    <link href="./dropzone.css" rel="stylesheet">
+    <link href="./basic.css" rel="stylesheet">
+    <style type="text/css">
+      .dropzone {
+        border: 2px dashed #0087F7;
+        border-radius: 5px;
+        background: #F2F1F1;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>你好，世界！</h1>
+    <div style="width: 500px; height: 200px;" id="dropzone">
+
+      <form action="upload.php" class="dropzone dz-clickable" id="producerUploadForm">
+        <!--
+        <div class="dz-message">
+          Drag Drop Image Here
+        </div>
+        -->
+        <div class="fallback">
+          <input name="userfile" type="file" multiple="multiple" />
+        </div>
+        
+      </form>
+      <button id="submit-all">Submit all files</button>
+
+    </div>
+    <div style="display:none;" id="preview-template"></div>
+    <script src="./jquery-1.11.2.js"></script>
+    <script src="./dropzone.js"></script>
+    <script>
+      //Dropzone.autoDiscover = false
+      
+
+      Dropzone.options.producerUploadForm = {
+    dictDefaultMessage: "Click here to add a new image",
+    url: 'upload.php',
+    //acceptedFiles: "image/*",
+    thumbnailWidth: 140,
+    thumbnailHeight: 140,
+    init: function () {
+        //--Load existing files if any
+        //var existingDocsRaw = @Html.Raw(Model.ImagesJSON);
+        var existingDocs = [];
+        var myDropzone = this;
+
+        
+
+        
+        this.on("sending", function(file, xhr, formData) {
+            var token = $('[name=__RequestVerificationToken]').val();
+            formData.append("uid", '@Model.UID');
+            formData.append("producerId", '@Model.ProducerID');
+            formData.append("__RequestVerificationToken", token);
+        });
+        this.on("success",function(file,args) {
+            // Create the remove button
+            var removeFileButton = '<a class="fa fa-times remove-btn pull-left" href="' + '@Url.Action("DeleteProducerImage","Upload")' + '"></a>';
+            var fullSizeButton = '<a target="_blank" class="fa fa-th-large remove-btn pull-right" href="' + args.File.URL + '"></a>';
+            var removeButton = Dropzone.createElement(removeFileButton);
+            var fullSizeButton = Dropzone.createElement(fullSizeButton);
+
+            // Capture the Dropzone instance as closure.
+            var _this = this;
+
+            // Listen to the click event
+            removeButton.addEventListener("click", function (e) {
+                // Make sure the button click doesn't submit the form:
+                e.preventDefault();
+                e.stopPropagation();
+                // Remove the file preview.
+                _this.removeFile(file);
+                // If you want to the delete the file on the server as well,
+                // you can do the AJAX request here.
+                $.ajax({
+                    method:'post',
+                    url: $(this).attr('href'),
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    data: { uid: '@Model.UID', producerId: '@Model.ProducerID', fileName: args.File.FileName }
+                }).done(function() { });
+            });
+
+            // Add the button to the file preview element.
+            file.previewElement.appendChild(removeButton);
+            file.previewElement.appendChild(fullSizeButton);                
+        });
+    }
+};
+      
+    </script>
+  </body>
+</html>

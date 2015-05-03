@@ -91,6 +91,17 @@ class PdoMysql{
        self::throwPdoError();
     }
     
+    /**
+     * 返回结果集中的一条数据
+     */
+    public static function getRow($sql=''){
+        self::query($sql);
+        $result = self::$PDOStmt->fetch(constant('PDO::FETCH_ASSOC'));
+        return $result;
+    }
+
+    public static 
+
     /*
      * 自定义pdo处理错误信息输出方法
      */
@@ -124,6 +135,7 @@ require('./config.pdomysql.php');
 // 测试
 $pdomysql = new PdoMysql();
 $sql = 'SELECT * FROM user';
-print_r($pdomysql->getAll($sql));
+//print_r($pdomysql->getAll($sql));
+//print_r($pdomysql->getRow($sql));
 
 

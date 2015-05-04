@@ -9,7 +9,8 @@ class PdoMysql{
     public static $PDOStmt = null;   // 保存PDOStatment对象
     public static $sqlStr = null;    // 保存查询sql
     public static $errInfo = null;   // 保存sql执行的错误信息
-
+    public static $lastInsertId = null; //保存插入操作时返回的插入数据的ID或序列值
+    public static $affectRows = 0;   // 保存增删改操作时受影响的行数
 
     public function __construct($dbConfig=''){
         if(!class_exists('PDO')){
@@ -99,8 +100,70 @@ class PdoMysql{
         $result = self::$PDOStmt->fetch(constant('PDO::FETCH_ASSOC'));
         return $result;
     }
+    
+    /**
+     * 执行增、删、改操作方法
+     */
+    public static function execute($sql=''){
+        $link = self::$pdo_link;
+        if(!$link) return false;
+        if(!empty(self::$PDOStmt)) self::free();
+        self::$sqlStr = $sql;
+        $result = $link->exec(self::$sqlStr);
+        // 检测sql执行过程中是否出现错误
+        self::throwPdoError();
+        if($result){
+            // 如果是插入操作 ，调用PDO::lastInsertId() 方法返回插入行ID，然后保存
+            self::$lastInsertId = $link->lastInsertId();
+            // 保存sql执行后返回的受影响的行数值
+            self::$affectRows = $result;
+            return self::$affectRows;
+        }else{
+            return false;
+        }
+        
+    }
 
-    public static 
+    public static function findById($tabName, $priId, $fields='*'){
+        $sql = 'SELECT %s FROM %s WHERE id=%d';
+        return self::getRow(sprintf($sql, self::parseFields($fields), $tabName, $priId));
+    }
+
+    public static function parseFields($fields){
+        // 传递进来的要查询的字段，我们规定形式只能是数组和字符串
+        if(is_array($fields)){
+            // 使用用户自定义函数对数组中的每个元素做回调处理
+            array_walk($fields, array('PdoMysql', 'addSpecialChar'));
+            $fieldsStr = implode(',', $fields);
+        }elseif(is_string($fields)){
+            // 反引号常见在SQL语句中来包含关键字
+            // === false 是防止 反引号 出现在 0 的位置 strpos将会返回0 == false，所以这里使用 恒等
+            if(strpos('`', $fields) === false){
+                $fields = explode(',', $fields);
+                // 使用用户自定义函数对数组中的每个元素做回调处理
+                array_walk($fields, array('PdoMysql', 'addSpecialChar'));
+                $fieldsStr = implode(',', $fields);
+            }
+        }else{
+            $fieldsStr = '*';
+        }
+        return $fieldsStr;
+    }
+    
+    /**
+     * 为查询字段添加反引号 方法
+     * 为了防止查询的字段可能和sql中的保留字冲突，通常我们给查询的地段添加 反引号
+     * 注意方法中是：引用传值的 &$value
+     */
+    public static function addSpecialChar(&$value){
+        if('*'===$value || strpos($value, '.')!==false || strpos($value,'`')!==false){
+
+        }elseif(strpos($value,'`')===false){
+            $value = '`'.trim($value).'`';
+        }
+        return $value;
+        
+    }
 
     /*
      * 自定义pdo处理错误信息输出方法
@@ -129,13 +192,5 @@ class PdoMysql{
     }
 }
 
-// 引入数据库配置常量
-require('./config.pdomysql.php');
-
-// 测试
-$pdomysql = new PdoMysql();
-$sql = 'SELECT * FROM user';
-//print_r($pdomysql->getAll($sql));
-//print_r($pdomysql->getRow($sql));
 
 

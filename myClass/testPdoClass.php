@@ -38,7 +38,10 @@ $sql = 'SELECT * FROM user';
 // 测试findById
 
 //print_r($pdomysql->findById('user', 17));
-print_r($pdomysql->findById('user', 17, array('name','email')));
+//print_r($pdomysql->findById('user', 17, array('name','email')));
+
+// 测试find()
+print_r($pdomysql->find('user','id=15 OR id=16'));
 
 
 

@@ -124,11 +124,28 @@ class PdoMysql{
         
     }
 
+    /**
+     * 通过ID找出相应表中的要求的字段
+     */
     public static function findById($tabName, $priId, $fields='*'){
         $sql = 'SELECT %s FROM %s WHERE id=%d';
         return self::getRow(sprintf($sql, self::parseFields($fields), $tabName, $priId));
     }
 
+    public static function find($tables, $where=null, $fields='*', $group=null, $having=null, $order=null, $limit=null){
+        $sql = 'SELECT '.self::parseFields($fields).' FROM '.$tables
+                .self::parseWhere($where)
+                .self::parseGroup($group)
+                .self::parseHaving($having)
+                .self::parseOrder($order)
+                .self::parseLimit($limit);
+        $result = self::getAll($sql);
+        return count($result)==1 ? $result[0] : $result;
+    }
+
+    /**
+     * 解析字段方法
+     */
     public static function parseFields($fields){
         // 传递进来的要查询的字段，我们规定形式只能是数组和字符串
         if(is_array($fields)){
@@ -149,7 +166,71 @@ class PdoMysql{
         }
         return $fieldsStr;
     }
-    
+   
+    /*
+     * 解析 WHERE 条件
+     */ 
+    public static function parseWhere($where){
+        $whereStr = '';
+        if(!empty($where) && is_string($where)){
+            $whereStr .= ' WHERE '.$where;
+        }
+        return $whereStr;
+    }
+
+    /*
+     * 解析分组 GROUP BY
+     */ 
+    public static function parseGroup($group){
+        $groupStr = '';
+        if(!empty($group) && is_string($group)){
+            $groupStr .= ' GROUP BY '.$group;
+        }
+        if(!empty($group) && is_array($group)){
+            $groupStr .= ' GROUP BY '.implode(',', $group);
+        }
+        return $groupStr;
+    }
+
+    /*
+     * 解析 HAVING
+     */ 
+    public static function parseHaving($having){
+        $havingStr = '';
+        if(!empty($having) && is_string($having)){
+            $havingStr .= ' HAVING '.$having;
+        }    
+        return $havingStr;
+    }    
+
+    /*
+     * 解析 ORDER BY
+     */ 
+    public static function parseOrder($order){
+        $orderStr = '';
+        if(!empty($order) && is_array($order)){
+            $orderStr .= ' ORDER BY '.implode(',', $order);
+        }
+        if(!empty($order) && is_string($order)){
+            $orderStr .= ' ORDER BY '.$order;
+        }
+        return $orderStr;
+    }
+
+    /*
+     * 解析 LIMIT 
+     */ 
+    public static function parseLimit($limit){
+        $limitStr = '';
+        if(!empty($limit) && is_array($limit)){
+            $limitStr = count($limit)>1 ? ' LIMIt '.$limit[0].', '.$limit[1] : ' LIMIT '.$limit[0];
+        }
+        if(!empty($limit) && is_string($limit)){
+            $limitStr = ' LIMIT '.$limit;
+        }
+        return $limitStr;
+    }
+
     /**
      * 为查询字段添加反引号 方法
      * 为了防止查询的字段可能和sql中的保留字冲突，通常我们给查询的地段添加 反引号

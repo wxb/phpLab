@@ -41,7 +41,17 @@ $sql = 'SELECT * FROM user';
 //print_r($pdomysql->findById('user', 17, array('name','email')));
 
 // 测试find()
-print_r($pdomysql->find('user','id=15 OR id=16'));
+//print_r($pdomysql->find('user','', 'id, name', 'id', null, 'id DESC', 3));
+
+// 测试add()
+$newData = array(
+                'id' => 21,
+                'name' => 'wangxb10',
+                'passwd' => '123',
+                'email' => 'wangxb7@qq.com'
+            );
+
+var_dump($pdomysql->add($newData,'user'));
 
 
 

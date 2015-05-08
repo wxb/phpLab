@@ -132,6 +132,10 @@ class PdoMysql{
         return self::getRow(sprintf($sql, self::parseFields($fields), $tabName, $priId));
     }
 
+    /*
+     * find()方法
+     * 根据传入的参数，组装的sql 完成复杂的、功能强大的数据查询的方法   
+     */
     public static function find($tables, $where=null, $fields='*', $group=null, $having=null, $order=null, $limit=null){
         $sql = 'SELECT '.self::parseFields($fields).' FROM '.$tables
                 .self::parseWhere($where)
@@ -141,6 +145,18 @@ class PdoMysql{
                 .self::parseLimit($limit);
         $result = self::getAll($sql);
         return count($result)==1 ? $result[0] : $result;
+    }
+
+    /*
+     * add() 方法，向数据库表中新添加一条数据
+     */
+    public static function add($dataArr, $table){
+        $keys = array_keys($dataArr);
+        array_walk($keys,array('PdoMysql', 'addSpecialChar'));
+        $fieldsStr = implode(',', $keys);
+        $values = "'".implode("','", array_values($dataArr))."'";
+        $sql = "INSERT INTO $table($fieldsStr) VALUES($values)";
+        return self::execute($sql);
     }
 
     /**
@@ -225,7 +241,7 @@ class PdoMysql{
         if(!empty($limit) && is_array($limit)){
             $limitStr = count($limit)>1 ? ' LIMIt '.$limit[0].', '.$limit[1] : ' LIMIT '.$limit[0];
         }
-        if(!empty($limit) && is_string($limit)){
+        if(!empty($limit) && (is_string($limit) || is_numeric($limit))){
             $limitStr = ' LIMIT '.$limit;
         }
         return $limitStr;

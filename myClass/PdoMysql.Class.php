@@ -190,7 +190,7 @@ class PdoMysql{
      * 获取最后一次执行的sql语句
      */
     public static function getLastSql(){
-        $link = self::$link;
+        $link = self::$pdo_link;
         if(!$link) return false;
         return self::$sqlStr;
     }    
@@ -199,7 +199,7 @@ class PdoMysql{
      * 得到最后一次执行插入语句时得到的AUTO_INCREMENT
      */
     public static function getLastInsertId(){
-        $link = self::$link;
+        $link = self::$pdo_link;
         if(!$link) return false;
         return self::$lastInsertId;
     }
@@ -208,7 +208,7 @@ class PdoMysql{
      * 获取数据库版本信息
      */
     public static function getDbVersion(){
-        $link = self::$link;
+        $link = self::$pdo_link;
         if(!$link) return false;
         return self::$dbVersion; 
     }

@@ -68,5 +68,10 @@ $sql = 'SELECT * FROM user';
 // 测试showTables()
 var_dump($pdomysql->showTables());
 
+$pdomysql->close();
+
+// 测试getLastSql()
+echo $pdomysql->getLastSql();
+
 
 

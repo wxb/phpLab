@@ -159,6 +159,73 @@ class PdoMysql{
         return self::execute($sql);
     }
 
+    /*
+     * update()
+     * 更新记录方法
+     */
+    public static function update($dataArr, $table, $where){
+        $set = '';
+        foreach($dataArr as $key=>$val){
+            $set .= "`".$key."`='".$val."',";
+        }
+        $sql = "UPDATE {$table} SET ".rtrim($set,",").self::parseWhere($where);
+        return self::execute($sql);
+
+    }
+
+    /*
+     * delete()
+     * 删除记录方法 
+     */
+    public static function delete($table, $where=null, $delAll=false){
+        if(empty($where) && empty($delAll)){
+            return false;
+        }
+        $sql = "DELETE FROM {$table}".self::parseWhere($where);
+        return self::execute($sql);
+    }
+    
+    /*
+     * getLastSql()
+     * 获取最后一次执行的sql语句
+     */
+    public static function getLastSql(){
+        $link = self::$link;
+        if(!$link) return false;
+        return self::$sqlStr;
+    }    
+    
+    /*
+     * 得到最后一次执行插入语句时得到的AUTO_INCREMENT
+     */
+    public static function getLastInsertId(){
+        $link = self::$link;
+        if(!$link) return false;
+        return self::$lastInsertId;
+    }
+
+    /*
+     * 获取数据库版本信息
+     */
+    public static function getDbVersion(){
+        $link = self::$link;
+        if(!$link) return false;
+        return self::$dbVersion; 
+    }
+
+    /*
+     * 得到数据库中的数据表
+     */
+    public static function showTables(){
+        $tables = array();
+        $link = self::$pdo_link;
+        $res = self::getAll('SHOW TABLES');
+        foreach($res as $key=>$val){
+            $tables[$key] = current($val);
+        }
+        return $tables;
+    }
+
     /**
      * 解析字段方法
      */
@@ -286,6 +353,13 @@ class PdoMysql{
      */
     public static function throw_exception($msg){
         echo '<div style="color:red">'.$msg.'</div>';
+    }
+
+    /*
+     * 关闭连接
+     */
+    public static function close(){
+        self::$pdo_link = null;
     }
 }
 

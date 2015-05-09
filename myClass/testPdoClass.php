@@ -44,16 +44,29 @@ $sql = 'SELECT * FROM user';
 //print_r($pdomysql->find('user','', 'id, name', 'id', null, 'id DESC', 3));
 
 // 测试add()
-$newData = array(
-                'id' => 21,
-                'name' => 'wangxb10',
-                'passwd' => '123',
-                'email' => 'wangxb7@qq.com'
-            );
+//$newData = array(
+//                'id' => 21,
+//                'name' => 'wangxb10',
+//                'passwd' => '123',
+//                'email' => 'wangxb7@qq.com'
+//            );
+//
+//var_dump($pdomysql->add($newData,'user'));
 
-var_dump($pdomysql->add($newData,'user'));
+// 测试update()
+//$upData = array(
+//            'name' => 'wangxiaobo20',
+//            'passwd' => '321',
+//            'email' => 'wangxiaobo@qq.com'
+//        );
+//echo $pdomysql->update($upData, 'user', 'id=20');
 
 
+// 测试delete()
+//var_dump($pdomysql->delete('user', 'id=21'));
+
+// 测试showTables()
+var_dump($pdomysql->showTables());
 
 
 

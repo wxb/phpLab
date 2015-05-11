@@ -1,0 +1,474 @@
+{include file="common/head.tpl" title="{$text_site_title}"}
+<link rel="stylesheet" href="{$smarty.const.RESOURCES}css/dropzone.css">
+<script src="{$smarty.const.RESOURCES}js/dropzone.js"></script>
+<style>
+th {
+    width: 20%;
+}
+</style>
+<script>
+    function OnChangeSize()
+    {
+        length = document.getElementById('length');
+        width  = document.getElementById('width');
+        height = document.getElementById('height');
+
+        size = length.value * width.value * height.value / 1000000000;
+
+        document.getElementById('size').innerHTML = Math.floor(size * 100) / 100;
+    }
+
+    function OnChangeMake(current)
+    {
+        var opt = document.getElementById('make').options;
+        var make = opt.item(opt.selectedIndex).value;
+
+        $('#model').children().remove();
+        modelitem[make].forEach(function(e) {
+            $('#model').append($('<option>').attr({ value: e} ).text(e));
+            if(e === current)
+            {
+                $('#model').val(e);
+            }
+        });
+    }
+
+    modelitem = new Array();
+{foreach from=$model item=item}
+{foreach from=$item item=item2 key=key}
+    if($(modelitem[{$item2.m_make_id}]).length === 0)
+    {
+        modelitem[{$item2.m_make_id}] = new Array();
+    }
+    modelitem[{$item2.m_make_id}][{$key}] = '{$item2.m_model_name}';
+{/foreach}
+{/foreach}
+</script>
+<body {if $stock_id}onload="OnChangeMake('{$stock.t_stock_model}');"{/if}>
+    {include file="common/header.tpl"}
+    <div id="container" style="margin: 0 auto; width: 1200px;">
+        {include file="admin/menu.tpl"}
+        <div class="col_10" style="background-color: white; margin-bottom: 30px; padding: 20px;">
+            <form name="form" action="/admin/stock_edit{if $stock_id}?id={$stock_id}{/if}" method="POST" enctype="multipart/form-data">
+                {if $stock_id}
+                    <p class="col_8" style="margin-top: 0; margin-bottom: 15px; border-left: 5px solid #1069BB; padding: 5px; font-size: 1.5em; font-weight: bold;">Stock Edit</p>
+                    <input type="hidden" name="id" value="{$stock_id}" />
+                    <button class="col_2 blue"  name="soldout" value="1" type="submit"><i class="fa fa-usd"></i> Soldout</button>
+                    <button id="update_btn" class="col_2 green" name="update"  value="1" ><i class="fa fa-refresh"></i> Update</button>
+                {else}
+                    <p class="col_10" style="margin-top: 0; margin-bottom: 15px; border-left: 5px solid #1069BB; padding: 5px; font-size: 1.5em; font-weight: bold;">Stock Edit</p>
+                    <button class="col_2 blue" name="add" value="1" type="submit"><i class="fa fa-plus"></i> Add</button>
+                {/if}
+                <table class="striped">
+                    <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <td>{if $stock_id}{$stock.t_stock_id}{/if}</td>
+                        </tr>
+                        <tr>
+                            <th>VIN</th>
+                            <td><input type="text" name="vin" class="col_12" value="{if $stock_id}{$stock.t_stock_vinserialno}{/if}" /></td>
+                        </tr>
+                        <tr>
+                            <th>Referenceno</th>
+                            <td><input id="referno" type="text" name="referenceno" class="col_12" value="{if $stock_id}{$stock.t_stock_referenceno}{/if}" /></td>
+                        </tr>
+                        <tr>
+                            <th>Name</th>
+                            <td><input type="text" name="name" class="col_12" value="{if $stock_id}{$stock.t_stock_name}{/if}" /></td>
+                        </tr>
+                        <tr>
+                            <th>Status</th>
+                            <td>
+                                <select name="status" class="col_12">
+                                    <option value=""  {if !$stock_id}selected{/if}>select</option>
+                                    <option value="0" {if $stock_id && $stock.t_stock_status==0}selected{/if}>opened</option>
+                                    <option value="1" {if $stock_id && $stock.t_stock_status==1}selected{/if}>reserved</option>
+                                    <option value="2" {if $stock_id && $stock.t_stock_status==2}selected{/if}>closed</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Make</th>
+                            <td>
+                                <select id="make" name="make" class="col_12" onchange="OnChangeMake();">
+                                    <option value="">select</option>
+                                    {foreach from=$make item=item}
+                                        <option value="{$item.m_make_id}" {if $stock_id && $stock.m_make_id == $item.m_make_id}selected{/if}>{$item.m_make_name}</option>
+                                    {/foreach}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Model</th>
+                            <td>
+                                <select id="model" name="model" class="col_12"></select>
+{*                                <input type="text" name="model" class="col_12" value="{if $stock_id}{$stock.t_stock_model}{/if}" />*}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Yearmonth</th>
+                            <td>
+                                <select name='year' class="col_2">
+                                    {for $year=1985 to 2013}
+                                    <option value={$year} {if $stock_id && $stock.t_stock_year == $year}selected{/if}>{$year}</option>
+                                    {/for}
+                                </select>
+                                 /
+                                <select name='month' class="col_1">
+                                    {for $month=1 to 12}
+                                    <option value={$month} {if $stock_id && $stock.t_stock_month == $month}selected{/if}>{$month}</option>
+                                    {/for}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Price</th>
+                            <td><div class="col_1 cneter">US$</div><input type="number" name="price" min="0" class="col_11" placeholder="US$" value="{if $stock_id}{$stock.t_stock_price_dollar}{/if}" /></td>
+                        </tr>
+                        <tr>
+                            <th>Discount price</th>
+                            <td><div class="col_1 cneter">US$</div><input type="number" name="discount_price" min="0" class="col_11" placeholder="US$" value="{if $stock_id}{$stock.t_stock_price_dollar_discount}{/if}" /></td>
+                        </tr>
+                        <tr>
+                            <th>Discount Start</th>
+                            <td>
+                                <input type="date" name="discount_start_date" class="col_3" value="{if $stock_id}{$stock.t_stock_discount_start|date_format:"%Y-%m-%d"}{/if}" />
+                                <input type="time" name="discount_start_time" class="col_2" value="{if $stock_id}{$stock.t_stock_discount_start|date_format:"%H:%M"}{/if}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Discount End</th>
+                            <td>
+                                <input type="date" name="discount_end_date" class="col_3" value="{if $stock_id}{$stock.t_stock_discount_end|date_format:"%Y-%m-%d"}{/if}" />
+                                <input type="time" name="discount_end_time" class="col_2" value="{if $stock_id}{$stock.t_stock_discount_end|date_format:"%H:%M"}{/if}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Body type 1</th>
+                            <td>
+                                <select id="type_1" name="type" class="col_12">
+                                    <option value="">select</option>
+                                    {foreach from=$type item=item}
+                                        <option value="{$item.m_type_id}" {if $stock_id && $stock.m_type_id == $item.m_type_id}selected{/if}>{$item.m_type_name}</option>
+                                    {/foreach}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Body type 2</th>
+                            <td>
+                                <select name="type_sub" class="col_12">
+                                    <option value="">select</option>
+                                    {foreach from=$type_sub item=item}
+                                        <option value="{$item.m_type_sub_id}" {if $stock_id && $stock.m_type_sub_id == $item.m_type_sub_id}selected{/if}>{$item.m_type_sub_name}</option>
+                                    {/foreach}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Door</th>
+                            <td><input type="number" name="door" min="1" class="col_12" value="{if $stock_id}{$stock.t_stock_door}{/if}" /></td>
+                        </tr>
+                        <tr>
+                            <th>Passanger</th>
+                            <td><input type="number" name="passanger" min="1" class="col_12" value="{if $stock_id}{$stock.t_stock_passanger}{/if}" /></td>
+                        </tr>
+                        <tr>
+                            <th>Color Outside</th>
+                            <td>
+                                <select name="color_outside" class="col_12">
+                                    <option value="">select</option>
+                                    {foreach from=$color item=item}
+                                        <option value="{$item.m_color_id}" {if $stock_id && $stock.m_color_id_outside == $item.m_color_id}selected{/if}>{$item.m_color_name}</option>
+                                    {/foreach}
+                                </select>
+                            </td>
+                        </tr>
+{*
+                        <tr>
+                            <th>Color Inside</th>
+                            <td>
+                                <select name="color_inside" class="col_12">
+                                    <option value="">select</option>
+                                    {foreach from=$color item=item}
+                                        <option value="{$item.m_color_id}" {if $stock_id && $stock.m_color_id_inside == $item.m_color_id}selected{/if}>{$item.m_color_name}</option>
+                                    {/foreach}
+                                </select>
+                            </td>
+                        </tr>
+*}
+                        <tr>
+                            <th>Drivetrain</th>
+                            <td>
+                                <select name="drivetrain" class="col_12">
+                                    <option value="">select</option>
+                                    {foreach from=$drivetrain item=item}
+                                        <option value="{$item.m_drivetrain_id}" {if $stock_id && $stock.m_drivetrain_id == $item.m_drivetrain_id}selected{/if}>{$item.m_drivetrain_name}</option>
+                                    {/foreach}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr id="mileage_tr" {if $stock.m_type_id|default:0 eq 10}style="display:none;" {/if}>
+                            <th>Mileage</th>
+                            <td><input type="number" name="mileage" min="0" class="col_12" value="{if $stock_id}{$stock.t_stock_mileage}{/if}" /></td>
+                        </tr>
+                        <tr id="hourmeter_tr" {if $stock.m_type_id|default:0 neq 10} style="display: none;" {/if}>
+                            <th>Hourmeter</th>
+                            <td><input type="number" name="hourmeter" min="0" class="col_12" value="{if $stock_id}{$stock.hourmeter|default:''}{/if}" /></td>
+                        </tr>
+                        <tr>
+                            <th>Displacement</th>
+                            <td><input type="number" name="displacement" min="0" class="col_12" value="{if $stock_id}{$stock.t_stock_displacement}{/if}" /></td>
+                        </tr>
+                        <tr>
+                            <th>Steering</th>
+                            <td>
+                                <select name="steering" class="col_12">
+                                    <option value="">select</option>
+                                    {foreach from=$steering item=item}
+                                        <option value="{$item.m_steering_id}" {if $stock_id && $stock.m_steering_id == $item.m_steering_id}selected{/if}>{$item.m_steering_name}</option>
+                                    {/foreach}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Transmission</th>
+                            <td>
+                                <select name="transmission" class="col_12">
+                                    <option value="">select</option>
+                                    {foreach from=$transmission item=item}
+                                        <option value="{$item.m_transmission_id}" {if $stock_id && $stock.m_transmission_id == $item.m_transmission_id}selected{/if}>{$item.m_transmission_name}</option>
+                                    {/foreach}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Fuel</th>
+                            <td>
+                                <select name="fuel" class="col_12">
+                                    <option value="">select</option>
+                                    {foreach from=$fuel item=item}
+                                        <option value="{$item.m_fuel_id}" {if $stock_id && $stock.m_fuel_id == $item.m_fuel_id}selected{/if}>{$item.m_fuel_name}</option>
+                                    {/foreach}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Size</th>
+                            <td>
+                                Length <input type="number" name="length" id='length' size="4" value="{if $stock_id}{$stock.t_stock_length}{/if}" onchange="OnChangeSize();" /> ×
+                                Width <input type="number"  name="width"  id='width'  size="4" value="{if $stock_id}{$stock.t_stock_width}{/if}"  onchange="OnChangeSize();" /> ×
+                                Height <input type="number" name="height" id='height' size="4" value="{if $stock_id}{$stock.t_stock_height}{/if}" onchange="OnChangeSize();" /> =
+                                <span id='size'>{if $stock_id}{$stock.size|round:2}{/if}</span>?
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Option</th>
+                            <td>
+                                <ul>
+                                {foreach from=$option item=item}
+                                    <li class="col_4">
+                                        <input type="checkbox" name="option[]" value="{$item.m_option_id}" {if $stock_id && isset($stock.m_option_name[$item.m_option_id])}checked{/if} style="margin-right: 5px;">{$item.m_option_name}<br>
+                                    </li>
+                                {/foreach}
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Mechanical problem</th>
+                            <td><textarea name="problem" class="col_12">{if $stock_id}{$stock.t_stock_machineproblem}{/if}</textarea></td>
+                        </tr>
+                        <tr>
+                            <th>Comments(public)</th>
+                            <td><textarea name="comment" class="col_12">{if $stock_id}{$stock.t_stock_comment}{/if}</textarea></td>
+                        </tr>
+                        <tr>
+                            <th>Comments(private)</th>
+                            <td><textarea name="comment_private" class="col_12">{if $stock_id}{$stock.t_stock_comment_private}{/if}</textarea></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+
+                <p style="margin-top: 20px; margin-bottom: 0; border-left: 5px solid #1069BB; padding: 5px; font-size: 1.5em; font-weight: bold;">Photos</p>
+            <div style="width: 100%; height: 330px;" id="">
+                    <div style="width: 300px;  float:left;" id="dropzone-main" class="">
+
+                            <form action="upload_img" class=" dropzone dz-clickable" id="main_dropzone">
+                                <input type="hidden" name="id" value="{$stock_id}" />
+                                <input type="hidden" name="upfilename" value="mainfile" />
+                                <input id="main_referno" type="hidden" name="referenceno" class="col_12" value="" />
+                            <div class="dz-message" style="">
+                            Drag Drop Image Here
+                            </div>
+                            <div class="fallback">
+                            <input name="mainfile" type="file" multiple="multiple" />
+                            </div>
+                            </form>
+                            <button id="submit-main">Main</button>
+                    </div>
+                    <div id="main-previews" class="dropzone-previews" style="width: 350px; height: 280px; float:left; margin: 0px 0px 20px 100px;" >
+                        {$flg=0}
+                        {if $stock_id}
+                            {foreach from=$photo item=item}
+                                {if '01.jpg' eq $item || '01.png' eq $item || '01.gif' eq $item}
+                                <img id="main_pre" src="{$smarty.const.RESOURCES}img/stock/{$stock.t_stock_referenceno}/{$item}" style="width: 100%; height:280px;">
+                                <a href="/admin/stock_delete_photo?id={$stock_id}&file={$item}" onclick="return confirm('Are you sure you want to delete this photo?');">Delete</a>
+                                {$flg=1}
+                                {break}
+                                {/if}
+                            {/foreach}
+                        {/if}
+                        {if $flg neq 1}
+                        <img id="main_pre" src="" style=" display:none; width: 100%; height:280px;">
+                                <a id="main_del_link" style="display:none;" href="/admin/stock_delete_photo?id={$stock_id}&file=" onclick="return confirm('Are you sure you want to delete this photo?');">Delete</a>
+                        {/if}
+                    </div>
+            </div>
+            <div style="width: 100%; " id="dropzone-sub">
+
+                    <form action="upload_img" class="dropzone dz-clickable" id="sub_dropzone">
+                                <input type="hidden" name="id" value="{$stock_id}" />
+                                <input type="hidden" name="upfilename" value="subfiles" />
+                                <input id="sub_referno" type="hidden" name="referenceno" class="col_12" value="{if $stock_id}{$stock.t_stock_referenceno}{/if}" />
+                    <div class="dz-message">
+                    Drag Drop Image Here
+                    </div>
+                    <div class="fallback">
+                    <input name="subfiles" type="file" multiple="multiple" />
+                    </div>
+                    </form>
+                    <button id="submit-sub">Sub</button>
+            </div>
+                <div id="sub_img">
+                    <ul>
+                        {if $stock_id}
+                            {foreach from=$photo item=item}
+                                <li class="col_4">
+                                    <img src="{$smarty.const.RESOURCES}img/stock/{$stock.t_stock_referenceno}/{$item}" style="width: 100%;" />
+                                    {$item}<br>
+                                    <a href="/admin/stock_delete_photo?id={$stock_id}&file={$item}" onclick="return confirm('Are you sure you want to delete this photo?');">Delete</a>
+                                </li>
+                            {/foreach}
+                        {/if}
+                        {*
+                            <li class="col_3 center">
+                                <input type="file" name="photo[]" multiple="multiple" accept="image/*">
+                            </li>
+                        *}
+                    </ul>
+                </div>
+                <div style="clear: both;"></div>
+        </div>
+    </div><!--container-->
+<script>
+        $(function(){
+                $('#update_btn').click(function(){
+                        var main_src = $('#main_pre').attr('src');
+                        if('' == main_src){
+                                alert('Please upload main image file');
+                                return false;
+                        }else{
+                                $("form[name='form']").submit();
+                                return true;
+                        }
+                });
+                // No.49 No.48の改修に伴って、Adminの登録画面にもhourmeterの項目を追加する 2015/05/05 add by wangxb start
+                $('#type_1').change(function(){
+                        var typeVal = $('#type_1').val();
+                        if(10 == typeVal){
+                                $('#mileage_tr').css('display','none');
+                                $("input[name='mileage']").val('');
+                                $('#hourmeter_tr').css('display','');
+                        }else{
+                                $('#hourmeter_tr').css('display','none');
+                                $("input[name='hourmeter']").val('');
+                                $('#mileage_tr').css('display','');
+                        }
+                });
+                // No.49 No.48の改修に伴って、Adminの登録画面にもhourmeterの項目を追加する 2015/05/05 add by wangxb end
+        });
+        function setSubmitReferNo(id){
+                var referNo = $.trim($('#referno').val());
+                if('' == referNo){
+                        alert('Please enter Referenceno');
+                        return false;
+                }else{
+                        $('#'+id+'_referno').val(referNo);
+                        return true;
+                }
+        }
+      Dropzone.autoDiscover = false
+      $("#main_dropzone").dropzone({
+        url: 'upload_img',
+        method: 'post',
+        paramName: 'mainfile',
+        maxFiles: 1,
+        //maxFilesize: 0.4,
+        autoProcessQueue: false,
+        acceptedFiles: '.jpg,.gif,.png',
+        addRemoveLinks: true,
+        dictCancelUpload: "Cancel",
+       // uploadMultiple: true,
+        thumbnailWidth: 200,
+        thumbnailHeight: 180,
+        init: function() {
+            var submitButton = document.querySelector("#submit-main");
+            mainDropzone = this;
+            submitButton.addEventListener("click", function() {
+                if(setSubmitReferNo('main')){
+                        mainDropzone.processQueue(); // Tell Dropzone to process all queued files.
+                }
+            });
+            this.on("maxfilesexceeded", function(file){
+                this.removeFile(file);
+                alert('Only one picture is required for main');
+            });
+            this.on("success", function(file, data) {
+                var dataObj = new Function("return" + data)();
+                $("#main_pre").css('display','inline');
+                $("#main_pre").attr('src',dataObj.src+'/'+dataObj.img+'?'+Math.random());
+                var del_href = $("#main_del_link").attr('href')+dataObj.img;
+                $('#main_del_link').attr('href',del_href);
+                $("#main_del_link").css('display','inline');
+            });
+            this.on("complete", function(file){
+
+            });
+            this.on("removedfile", function(file) {
+            });
+        }
+      });
+      $("#sub_dropzone").dropzone({
+        url: 'upload_img',
+        method: 'post',
+        paramName: 'subfiles',
+        maxFiles: 100,
+        //maxFilesize: 0.4,
+        parallelUploads: 200,
+        autoProcessQueue: false,
+        acceptedFiles: '.jpg,.gif,.png',
+        addRemoveLinks: true,
+        dictCancelUpload: "Cancel",
+        uploadMultiple: true,
+        init: function() {
+            var submitSubButton = document.querySelector("#submit-sub");
+            subDropzone = this;
+            submitSubButton.addEventListener("click", function() {
+                if(setSubmitReferNo('sub')){
+                        subDropzone.processQueue(); // Tell Dropzone to process all queued files.
+                }
+            });
+            this.on("success", function(file,data) {
+                //$('#sub_img ul').append('<li class="col_4"><img src="'+data+'/'+file.name+'" style="width: 100%;" /><br><a href= onclick=>Delete</a></li>');
+            });
+            this.on("removedfile", function(file) {
+                console.log("File " + file.name + "removed");
+            });
+        }
+      });
+    </script>
+    {include file="common/footer.tpl"}
+</body>
+</html>

@@ -18,4 +18,6 @@
 		1. crypt() 返回一个基于标准 UNIX DES 算法或系统上其他可用的替代算法的散列字符串。    
 		2. $str: 要加密的字符串   
 		   $salt: 盐值（加密时的干扰码，使加密更加安全）   
-		3. [参考手册-crypt](http://php.net/manual/zh/function.crypt.php)
+		3. [参考手册-crypt](http://php.net/manual/zh/function.crypt.php)   
+		4. CRYPT_MD5 - MD5 散列使用一个以 $1$ 开始的 12 字符的字符串盐值。(盐值就是以$1$开始 中间最多8个字符 然后以 $结束，例如：$1$6n2.V33.$yMk66jq2vq5LxszxA7.4w/ 前面的是盐值，后面的是密文，当我们使用自动盐值时，这个密文每次都会变化，因为每次都会生成不同的盐值)
+		5. CRYPT_STD_DES - 基于标准 DES 算法的散列使用 "./0-9A-Za-z" 字符中的两个字符作为盐值（当盐值$salt设置超过2个字符，函数也只截取两个字符）

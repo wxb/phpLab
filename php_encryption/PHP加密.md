@@ -38,5 +38,8 @@
 	
 * 信息加密技术   
 	1. 单项散列加密   
+	   ![image](https://github.com/wxb/php-code/raw/master/php_encryption/01.jpg)
 	2. 对称散列加密    
+	   ![image](https://github.com/wxb/php-code/raw/master/php_encryption/02.jpg)
 	3. 非对称散列加密
+	   ![image](https://github.com/wxb/php-code/raw/master/php_encryption/03.jpg)

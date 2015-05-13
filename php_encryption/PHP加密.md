@@ -31,3 +31,12 @@
 		3. urldecode ( string $str ) 解码由urlencode编码的字符串， 加号（'+'）被解码成一个空格字符。   
 		4. rawurlencode 和 rawurldecode 相对应于上面的两个函数，区别是这两个函数在编码空格的时候会编码成 %20，而rulencode会将空格编码成 + 号 ，urldecode将+解码成空格    
 		5. demo：urlcode.php
+	* base64_encode和base64_decode
+		1. base64_encode:使用 base64 对 data 进行编码。设计此种编码是为了使二进制数据可以通过非纯 8-bit 的传输层传输，例如电子邮件的主体。
+		2. base64_decode: 对使用 MIME base64 编码的数据进行解码
+		3. demo：base64_encode.php、base64_decode.php、base64_img.php
+	
+* 信息加密技术   
+	1. 单项散列加密   
+	2. 对称散列加密    
+	3. 非对称散列加密

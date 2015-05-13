@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dropzonejs Template</title>
+    <link href="./dropzone.css" rel="stylesheet">
+    <link href="./basic.css" rel="stylesheet">
+    <style type="text/css">
+      .dropzone {
+        border: 2px dashed #0087F7;
+        border-radius: 5px;
+        background: #F2F1F1;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>你好，世界！</h1>
+    <div style="width: 500px; height: 200px;">
+
+      <div id="parent" style="width: 500px; height: 200px;">
+        <span>Change file</span>
+      </div>
+      <button id="submit-all">Submit all files</button>
+
+    </div>
+    <div style="display:none;" id="preview-template"></div>
+    <script src="./jquery-1.11.2.js"></script>
+    <script src="./dropzone.js"></script>
+    <script>
+    
+
+    
+        new Dropzone("div#parent", {
+          url: 'upload.php'
+        });
+    
+      
+    </script>
+  </body>
+</html>

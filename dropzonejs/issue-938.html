@@ -45,7 +45,7 @@
       var dropzone = new Dropzone ("#mydropzone", {
         maxFilesize: 256, // Set the maximum file size to 256 MB
         paramName: "document[attachment]", // Rails expects the file upload to be something like model[field_name]
-        autoProcessQueue: false,
+        autoProcessQueue: true,
         addRemoveLinks: true // Don't show remove links on dropzone itself.
       });
 

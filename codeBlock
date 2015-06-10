@@ -1,0 +1,6 @@
+
+```
+$fileds = array('user_id', 'user_name', 'mobile', 'register_time', 'register_country', 'register_province', 'register_city');
+$fileds_flip = array_flip($fileds);
+$where_arr = array_intersect_key($where_arr, $fileds_flip);
+```

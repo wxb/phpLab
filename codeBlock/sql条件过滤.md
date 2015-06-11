@@ -1,7 +1,7 @@
 **经常在我们写模型方法时，对于需要拼接的where条件，我们需要做判断过滤**   
 
 
-	```   
+	
 	public function getRegisterInfo($where_arr){
 		$fileds = array('user_id', 'user_name', 'mobile', 'register_time', 'register_country', 'register_province', 'register_city');
 		$fileds_flip = array_flip($fileds);
@@ -25,4 +25,4 @@
 		return $result;
 	}
 
-	```
+	

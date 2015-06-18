@@ -31,7 +31,7 @@ array_map()
 
   ```
   
-  * 输出   
+* 输出   
   ```php
   Array
   (

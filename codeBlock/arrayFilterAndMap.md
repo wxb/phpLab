@@ -95,28 +95,28 @@ array_map()
   3. 结果
   ```php
   // 执行test1，打印原数组，可以在下面看到原数组没有改变
-      Array
-      (
-          [0] => 1
-          [1] => 1
-          [2] => 
-          [3] => 0
-          [4] => 0
-          [5] => 
-          [6] => Array
-              (
-              )
-      
-      )
-      // 执行test2，打印原数组，可以在下面看到原数组改变了
-      Array
-      (
-          [0] => 1
-          [1] => 1
-          [2] => this is null
-          [3] => this is null
-          [4] => this is null
-          [5] => this is null
-          [6] => this is null
-      )
+    Array
+    (
+        [0] => 1
+        [1] => 1
+        [2] => 
+        [3] => 0
+        [4] => 0
+        [5] => 
+        [6] => Array
+            (
+            )
+    
+    )
+    // 执行test2，打印原数组，可以在下面看到原数组改变了
+    Array
+    (
+        [0] => 1
+        [1] => 1
+        [2] => this is null
+        [3] => this is null
+        [4] => this is null
+        [5] => this is null
+        [6] => this is null
+    )
   ```

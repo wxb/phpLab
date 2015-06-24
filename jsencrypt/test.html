@@ -6,23 +6,68 @@
     <script src="./jsencrypt.min.js"></script>
     <script type="text/javascript">
 
+function encryptRequest(reqUrl, ajaxData, publicKey){
+    var encrypt = new JSEncrypt();
+    encrypt.setPublicKey(publicKey);
+    var encrypted = encrypt.encrypt(ajaxData);
+
+          var ajax_data = {
+                input : encrypted 
+          };
+          
+          $.ajax({
+                url: reqUrl,
+                type: 'post',
+                data: ajax_data,
+                dataType: 'json',
+                success: function (data) {                    
+                    if (data.success) {
+                        console.info('登录成功，正在重定向...');
+                    } else {
+                        console.info('错误');
+                    }
+                },
+                error: function (xhr) {
+                    is_in_progress = false;
+                    console.info('抱歉！出错！联系 contact@cnblogs.com');
+                }
+            });
+
+
+}
+
       // Call this code when the page is done loading.
       $(function() {
 
         // Run a quick encryption/decryption when they click.
         $('#testme').click(function() {
+            
+            var data = [];
+            data['username']= $('#username').val();
+            data['passwd']= $('#passwd').val();
+            console.info(data);
+            console.log(data.length);
+            for(var i=0; i<data.length; i++){
+                console.info(i);
+            }
+            data.forEach(function(element){
+                console.log(element);
+            });
 
+            var pkey = $('#pubkey').val();
+            encryptRequest('./test.php', data, pkey);
           // Encrypt with the public key...
-          var encrypt = new JSEncrypt();
-          encrypt.setPublicKey($('#pubkey').val());
-          var encrypted = encrypt.encrypt($('#username').val());
-          console.info(encrypted);
+          //var encrypt = new JSEncrypt();
+          //encrypt.setPublicKey($('#pubkey').val());
+          //var encrypted = encrypt.encrypt($('#username').val());
+          //console.info(encrypted);
 
           // Decrypt with the private key...
-          var decrypt = new JSEncrypt();
-          decrypt.setPrivateKey($('#privkey').val());
-          var uncrypted = decrypt.decrypt(encrypted);
-          console.error(uncrypted);
+          //var decrypt = new JSEncrypt();
+          //decrypt.setPrivateKey($('#privkey').val());
+          //var uncrypted = decrypt.decrypt(encrypted);
+          //console.error(uncrypted);
+          /*
           var ajax_data = {
                 input : encrypted 
           };
@@ -52,6 +97,7 @@
 //          else {
 //            alert('Something went wrong....');
 //          }
+        */
         });
       });
     </script>

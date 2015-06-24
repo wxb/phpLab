@@ -1,6 +1,6 @@
 ##jsencrypt
 
-####js的一个使用OpenSSLice加密，解密，秘钥生成类库**  
+####js的一个使用OpenSSLice加密，解密，秘钥生成类库      
 **A Javascript library to perform OpenSSL RSA Encryption, Decryption, and Key Generation*** 
 
 [github主页](https://github.com/travist/jsencrypt)    

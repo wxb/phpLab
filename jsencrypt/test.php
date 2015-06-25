@@ -1,6 +1,6 @@
 <?php
     
-$input = $_POST['input'];
+$input = $_POST;
 
 $private_key = '-----BEGIN RSA PRIVATE KEY-----
 MIICXAIBAAKBgQCBWNoG5LJ3u44Gs8PWs1MaNUQQ+mOmh+9zWdzSt3ORbmfCDvU+
@@ -27,12 +27,9 @@ kOluA7g7heq8PPlE9wIDAQAB
 
 $pi_key =  openssl_pkey_get_private($private_key);//这个函数可用来判断私钥是否是可用的，可用返回资源id Resource id  
 $pu_key = openssl_pkey_get_public($public_key);//这个函数可用来判断公钥是否是可用的  
-print_r($pi_key);echo "\n";  
-print_r($pu_key);echo "\n"; 
 
-echo $input,'\n';
 
 $decrypted = "";  
-openssl_private_decrypt(base64_decode($input),$decrypted,$pi_key);//私钥解密  
+openssl_private_decrypt(base64_decode($input['username']),$decrypted,$pi_key);//私钥解密  
 echo $decrypted,"\n";  
 

@@ -6,32 +6,33 @@
     <script src="./jsencrypt.min.js"></script>
     <script type="text/javascript">
 
-function encryptRequest(reqUrl, ajaxData, publicKey){
+function encryptRequest(reqUrl, data, publicKey){
     var encrypt = new JSEncrypt();
     encrypt.setPublicKey(publicKey);
-    var encrypted = encrypt.encrypt(ajaxData);
+    // ajax请求发送的数据对象
+    var ajaxData = new Object();
+    // 将data数组赋给ajax对象
+    for(var key in data){
+        ajaxData[key] = encrypt.encrypt(data[key]);
+    }
 
-          var ajax_data = {
-                input : encrypted 
-          };
-          
-          $.ajax({
-                url: reqUrl,
-                type: 'post',
-                data: ajax_data,
-                dataType: 'json',
-                success: function (data) {                    
-                    if (data.success) {
-                        console.info('登录成功，正在重定向...');
-                    } else {
-                        console.info('错误');
-                    }
-                },
-                error: function (xhr) {
-                    is_in_progress = false;
-                    console.info('抱歉！出错！联系 contact@cnblogs.com');
+      $.ajax({
+            url: reqUrl,
+            type: 'post',
+            data: ajaxData,
+            dataType: 'json',
+            success: function (data) {                    
+                if (data.success) {
+                    console.info('登录成功，正在重定向...');
+                } else {
+                    console.info('错误');
                 }
-            });
+            },
+            error: function (xhr) {
+                is_in_progress = false;
+                console.info('抱歉！出错！联系 contact@cnblogs.com');
+            }
+        });
 
 
 }
@@ -43,12 +44,13 @@ function encryptRequest(reqUrl, ajaxData, publicKey){
         $('#testme').click(function() {
             
             var data = [];
+            data.length = 2;
             data['username']= $('#username').val();
             data['passwd']= $('#passwd').val();
             console.info(data);
             console.log(data.length);
-            for(var i=0; i<data.length; i++){
-                console.info(i);
+            for(var k in data){
+                console.info(k);
             }
             data.forEach(function(element){
                 console.log(element);

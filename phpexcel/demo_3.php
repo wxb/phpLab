@@ -36,23 +36,24 @@ for($i=0; $i<count($pidArr); $i++){
 		$flag++;
 	}
 }
-browser_exprot('export_3.xlsx');
+
+$objPhpExcel->setActiveSheetIndex(0);
+
 $objWrite = PHPExcel_IOFactory::createWriter($objPhpExcel, 'Excel2007');
 // ±£´æÎÄ¼þ	
 //$objWrite->save('./demo_3.xlsx');
 
-
+browser_exprot('export_3.xlsx');
 $objWrite->save('php://output');
 
 
 function browser_exprot($fileName, $excelType='Excel2007'){
-	if('Excel5' == excelType){
+	if('Excel5' == $excelType){
 		// Redirect output to a client¡¯s web browser (Excel5)
 		header('Content-Type: application/vnd.ms-excel');
 	}else{
 		// Redirect output to a client¡¯s web browser (Excel2007)
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-		
 	}
 	header('Content-Disposition: attachment;filename="'.$fileName.'"');
 	header('Cache-Control: max-age=0');

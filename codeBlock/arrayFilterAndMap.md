@@ -62,9 +62,9 @@ array_map()
 ```php
 bool array_walk ( array &$array , callable $funcname [, mixed $userdata = NULL ] )
 ```
-请注意这里和array_map(callable $callback , array $arr1 [, array $... ])的区别：
-	参数```php array &$array ``` 这里的 **&**    
-	参数```$funcname```（回调函数名）和```$callback```（回调函数）     
+请注意这里和array_map(callable $callback , array $arr1 [, array $... ])的区别：    
+	> 参数```php array &$array ``` 这里的 **&**       
+	> 参数```$funcname```（回调函数名）和```$callback```（回调函数）       
 2. 测试
 ```php
 <?php

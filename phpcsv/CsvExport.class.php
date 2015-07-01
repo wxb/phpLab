@@ -3,13 +3,13 @@ namespace Org\Util;
 
 /**
  *------------------------------------------------------------------------------
- * @deprecated     园区管理中CSV文件导出类
+ * @deprecated     CSV文件导出类
  *------------------------------------------------------------------------------
  * @class           CsvExport
  * @namespace       Org\Util
- * @author          wangxy  <sdeepwang@gmail.com>
+ * @author          xxx  <xxx@gmail.com>
  * @version         1.0.0
- * @copyright       Eoopen.com  Copyright (c) 2015
+ * @copyright       xxx.com  Copyright (c) 2015
  * @date            2015.06.29
  *------------------------------------------------------------------------------
  */

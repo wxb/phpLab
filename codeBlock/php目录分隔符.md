@@ -1,3 +1,7 @@
+
+**PHP目录分隔符常量**    
+`DIRECTORY_SEPARATOR`
+```php
 <?php
   /**
    * php test file
@@ -7,6 +11,5 @@
    */
    
   echo DIRECTORY_SEPARATOR;  // '/'
-  echo PATH_SEPARATOR;
-  
-
+  echo PATH_SEPARATOR;       // ':'
+```

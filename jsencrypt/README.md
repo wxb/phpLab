@@ -4,7 +4,7 @@
 **A Javascript library to perform OpenSSL RSA Encryption, Decryption, and Key Generation*** 
 
 [github主页](https://github.com/travist/jsencrypt)    
-[官方网站](https://github.com/travist/jsencrypt)    
+[官方网站](http://travistidwell.com/jsencrypt/)    
 
 ####PHP关于OpenSSL相关资料
 

@@ -5,122 +5,48 @@
     <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
     <script src="./jsencrypt.min.js"></script>
     <script type="text/javascript">
-
+// 使用jsencrypt类库加密js方法，
 function encryptRequest(reqUrl, data, publicKey){
     var encrypt = new JSEncrypt();
     encrypt.setPublicKey(publicKey);
     // ajax请求发送的数据对象
-    var ajaxData = new Object();
+    var sendData = new Object();
     // 将data数组赋给ajax对象
     for(var key in data){
-        ajaxData[key] = encrypt.encrypt(data[key]);
+        sendData[key] = encrypt.encrypt(data[key]);
     }
 
       $.ajax({
             url: reqUrl,
             type: 'post',
-            data: ajaxData,
+            data: sendData,
             dataType: 'json',
             success: function (data) {                    
-                if (data.success) {
-                    console.info('登录成功，正在重定向...');
-                } else {
-                    console.info('错误');
-                }
+                console.info(data);
             },
             error: function (xhr) {
-                is_in_progress = false;
-                console.info('抱歉！出错！联系 contact@cnblogs.com');
+                console.error('出错了');
             }
         });
-
 
 }
 
       // Call this code when the page is done loading.
       $(function() {
 
-        // Run a quick encryption/decryption when they click.
         $('#testme').click(function() {
             
             var data = [];
-            data.length = 2;
             data['username']= $('#username').val();
             data['passwd']= $('#passwd').val();
-            console.info(data);
-            console.log(data.length);
-            for(var k in data){
-                console.info(k);
-            }
-            data.forEach(function(element){
-                console.log(element);
-            });
 
             var pkey = $('#pubkey').val();
             encryptRequest('./test.php', data, pkey);
-          // Encrypt with the public key...
-          //var encrypt = new JSEncrypt();
-          //encrypt.setPublicKey($('#pubkey').val());
-          //var encrypted = encrypt.encrypt($('#username').val());
-          //console.info(encrypted);
-
-          // Decrypt with the private key...
-          //var decrypt = new JSEncrypt();
-          //decrypt.setPrivateKey($('#privkey').val());
-          //var uncrypted = decrypt.decrypt(encrypted);
-          //console.error(uncrypted);
-          /*
-          var ajax_data = {
-                input : encrypted 
-          };
-          
-          $.ajax({
-                url: './test.php',
-                type: 'post',
-                data: ajax_data,
-                dataType: 'json',
-                success: function (data) {                    
-                    if (data.success) {
-                        console.info('登录成功，正在重定向...');
-                    } else {
-                        console.info('错误');
-                    }
-                },
-                error: function (xhr) {
-                    is_in_progress = false;
-                    console.info('抱歉！出错！联系 contact@cnblogs.com');
-                }
-            });
-
-          // Now a simple check to see if the round-trip worked.
-//          if (uncrypted == $('#input').val()) {
-//            alert('It works!!!');
-//          }
-//          else {
-//            alert('Something went wrong....');
-//          }
-        */
         });
       });
     </script>
   </head>
   <body>
-    <label for="privkey">Private Key</label><br/>
-    <textarea id="privkey" rows="15" cols="65">-----BEGIN RSA PRIVATE KEY-----
-MIICXAIBAAKBgQCBWNoG5LJ3u44Gs8PWs1MaNUQQ+mOmh+9zWdzSt3ORbmfCDvU+
-ssW/6QTTgXvWWx7+Wzq/a4fCCQp72zSqXeVhWkTVct9Hyp/iMo5K6qOEK76z9z+t
-P/u99X6qazeXGVMWKkPiyZT4mKAGd/U8Mph9Z1Z5kOluA7g7heq8PPlE9wIDAQAB
-AoGABPQwNX9gznEieWM9JuXrUt+jYbsVQfWG2DYi3Pclt/YwhyAniGU0aas1Ahy9
-b3JB95/q2hX2Nxo9iozUsYmzFT99dm2HBsHDnpnUgpyDtGo9sXlhLktyey53UKRx
-QJkW5dWWUQfssNrCe08N3vtLiDIy04lRQ8F0eJ/iklzk1HECQQC22pOz7V2K5/50
-w9LA9UBSl7wWhTTY5G1gsBEm5tNmbM/ZqCJ1FXB4uuDgz0o0N0x8T8JkkPrRWH5q
-GIHFRswVAkEAtRbV8PoLnyT73hxtCw0F17aaI8W5AGhvsbjdA6nMo6byBR5xKN+7
-lalfXYEfXPnStHVNSnQVFjN3T06iJV6z2wJBAKj51rLYcLBT8XbQG+vK+FUa+WrK
-UGr6tQU7z63mc4dcmLtoP+d5F4XKFNRLWyRj0d+zCU5MGCzrnW7IFOxMn30CQEtv
-4N3K/C5mtLmZM9+npChxfBKs2l2OJAFwFjnhcUs3T5jMTq2NTlKRRRXppUwREjJ0
-ryb15pbiB7C0/Bz/L4MCQC1AOKKjnqQEpINatjZLkyay0bXBih9GXovz3T1eAxaS
-QOEzIC+hGjX+2x1z5jUwwKCgjVUaZdrx470SMJM2Js8=
------END RSA PRIVATE KEY-----</textarea><br/>
     <label for="pubkey">Public Key</label><br/>
     <textarea id="pubkey" rows="15" cols="65">-----BEGIN PUBLIC KEY-----
 MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCBWNoG5LJ3u44Gs8PWs1MaNUQQ

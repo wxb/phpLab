@@ -1,17 +1,9 @@
-##jsencrypt
+##博客园加密登录--jsencrypt
 
-####js的一个使用OpenSSLice加密，解密，秘钥生成类库      
-**A Javascript library to perform OpenSSL RSA Encryption, Decryption, and Key Generation*** 
+####问题由来   
+前几天在做项目的时候，发现一般做登录的时候只是一个非常简单的`form`表单，但是这样肯定是不安全的！所以想去看看其他比较流行的网站是怎么实现的。说到安全，我第一个想到的就是去看支付宝，毕竟人家那么大的系统并且管理的是money啊! 结果，支付宝的登录确实复杂，chrome的F12竟然找不到。算了，看看我大博客园吧！
 
-[github主页](https://github.com/travist/jsencrypt)    
-[官方网站](http://travistidwell.com/jsencrypt/)    
-
-####PHP关于OpenSSL相关资料
-
-[PHP手册OpenSSL](http://php.net/manual/zh/book.openssl.php)   
-
-####问题由来
-
+下面就是从博客园登录页面copy下来的js登录代码片段
 博客园登录时采用的ajax发信http登录请求，就是采用jsencypt加密，以保护用户登录账号安全，一下是js片段代码
 ```js
  var return_url = 'http://home.cnblogs.com/u/wxb0328/';
@@ -134,71 +126,134 @@
         });
 ```
 
-前台的js参考jsencrypt类库使用说明和结合上面的博客园登录js，就能很快学会，比较简单！
+可以看到博客园使用了一个js加密类库：jsencrypt，下面就来了解一下这个类库！
+
+####js的一个使用OpenSSL加密，解密，秘钥生成类库      
+**A Javascript library to perform OpenSSL RSA Encryption, Decryption, and Key Generation*** 
+这里不对jsencrypt这个js类库做详细的介绍了，大家有兴趣可以去它的github主页学习，其实这个类库还是相对比较简单的，只要稍微看看就应该可以掌握。
+
+[github主页](https://github.com/travist/jsencrypt)    
+[官方网站](http://travistidwell.com/jsencrypt/)    
+
+####PHP关于OpenSSL相关资料
+
+[PHP手册OpenSSL](http://php.net/manual/zh/book.openssl.php)  
 
 ####关于后台PHP解密  
 
 1. 学习PHP手册：[PHP手册OpenSSL](http://php.net/manual/zh/book.openssl.php)  
-2. 参考博客：[php rsa加密解密实例](http://blog.csdn.net/clh604/article/details/20224735)
+2. 参考博客：[php rsa加密解密实例](http://blog.csdn.net/clh604/article/details/20224735)   
+
+####下面贴出我自己写的测试demo
+**test.html**
+ ```html
+ <!doctype html>
+<html>
+  <head>
+    <title>JavaScript RSA Encryption</title>
+    <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+    <script src="./jsencrypt.min.js"></script>
+    <script type="text/javascript">
+// 使用jsencrypt类库加密js方法，
+function encryptRequest(reqUrl, data, publicKey){
+    var encrypt = new JSEncrypt();
+    encrypt.setPublicKey(publicKey);
+    // ajax请求发送的数据对象
+    var sendData = new Object();
+    // 将data数组赋给ajax对象
+    for(var key in data){
+        sendData[key] = encrypt.encrypt(data[key]);
+    }
+
+      $.ajax({
+            url: reqUrl,
+            type: 'post',
+            data: sendData,
+            dataType: 'json',
+            success: function (data) {                    
+                console.info(data);
+            },
+            error: function (xhr) {
+                console.error('出错了');
+            }
+        });
+
+}
+
+      // Call this code when the page is done loading.
+      $(function() {
+
+        $('#testme').click(function() {
+            
+            var data = [];
+            data['username']= $('#username').val();
+            data['passwd']= $('#passwd').val();
+
+            var pkey = $('#pubkey').val();
+            encryptRequest('./test.php', data, pkey);
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <label for="pubkey">Public Key</label><br/>
+    <textarea id="pubkey" rows="15" cols="65">-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCBWNoG5LJ3u44Gs8PWs1MaNUQQ
++mOmh+9zWdzSt3ORbmfCDvU+ssW/6QTTgXvWWx7+Wzq/a4fCCQp72zSqXeVhWkTV
+ct9Hyp/iMo5K6qOEK76z9z+tP/u99X6qazeXGVMWKkPiyZT4mKAGd/U8Mph9Z1Z5
+kOluA7g7heq8PPlE9wIDAQAB
+-----END PUBLIC KEY-----</textarea><br/>
+    <label for="input">Text to encrypt:</label><br/>
+    name:<input id="username" name="username" type="text"></input><br/>
+    password:<input id="passwd" name="passwd" type="password"></input><br/>
+    <input id="testme" type="button" value="submit" /><br/>
+  </body>
+</html>
+
+ ```
+ 
   ```php
-  <?php
+ <?php
+    
+// 接收客户端发送过来的经过加密的登录信息
+$input = $_POST;
+// 私钥是放在服务器端的，用以验证和解密客户端经过公钥加密后的信息
 $private_key = '-----BEGIN RSA PRIVATE KEY-----
-MIICXQIBAAKBgQC3//sR2tXw0wrC2DySx8vNGlqt3Y7ldU9+LBLI6e1KS5lfc5jl
-TGF7KBTSkCHBM3ouEHWqp1ZJ85iJe59aF5gIB2klBd6h4wrbbHA2XE1sq21ykja/
-Gqx7/IRia3zQfxGv/qEkyGOx+XALVoOlZqDwh76o2n1vP1D+tD3amHsK7QIDAQAB
-AoGBAKH14bMitESqD4PYwODWmy7rrrvyFPEnJJTECLjvKB7IkrVxVDkp1XiJnGKH
-2h5syHQ5qslPSGYJ1M/XkDnGINwaLVHVD3BoKKgKg1bZn7ao5pXT+herqxaVwWs6
-ga63yVSIC8jcODxiuvxJnUMQRLaqoF6aUb/2VWc2T5MDmxLhAkEA3pwGpvXgLiWL
-3h7QLYZLrLrbFRuRN4CYl4UYaAKokkAvZly04Glle8ycgOc2DzL4eiL4l/+x/gaq
-deJU/cHLRQJBANOZY0mEoVkwhU4bScSdnfM6usQowYBEwHYYh/OTv1a3SqcCE1f+
-qbAclCqeNiHajCcDmgYJ53LfIgyv0wCS54kCQAXaPkaHclRkQlAdqUV5IWYyJ25f
-oiq+Y8SgCCs73qixrU1YpJy9yKA/meG9smsl4Oh9IOIGI+zUygh9YdSmEq0CQQC2
-4G3IP2G3lNDRdZIm5NZ7PfnmyRabxk/UgVUWdk47IwTZHFkdhxKfC8QepUhBsAHL
-QjifGXY4eJKUBm3FpDGJAkAFwUxYssiJjvrHwnHFbg0rFkvvY63OSmnRxiL4X6EY
-yI9lblCsyfpl25l7l5zmJrAHn45zAiOoBrWqpM5edu7c
+MIICXAIBAAKBgQCBWNoG5LJ3u44Gs8PWs1MaNUQQ+mOmh+9zWdzSt3ORbmfCDvU+
+ssW/6QTTgXvWWx7+Wzq/a4fCCQp72zSqXeVhWkTVct9Hyp/iMo5K6qOEK76z9z+t
+P/u99X6qazeXGVMWKkPiyZT4mKAGd/U8Mph9Z1Z5kOluA7g7heq8PPlE9wIDAQAB
+AoGABPQwNX9gznEieWM9JuXrUt+jYbsVQfWG2DYi3Pclt/YwhyAniGU0aas1Ahy9
+b3JB95/q2hX2Nxo9iozUsYmzFT99dm2HBsHDnpnUgpyDtGo9sXlhLktyey53UKRx
+QJkW5dWWUQfssNrCe08N3vtLiDIy04lRQ8F0eJ/iklzk1HECQQC22pOz7V2K5/50
+w9LA9UBSl7wWhTTY5G1gsBEm5tNmbM/ZqCJ1FXB4uuDgz0o0N0x8T8JkkPrRWH5q
+GIHFRswVAkEAtRbV8PoLnyT73hxtCw0F17aaI8W5AGhvsbjdA6nMo6byBR5xKN+7
+lalfXYEfXPnStHVNSnQVFjN3T06iJV6z2wJBAKj51rLYcLBT8XbQG+vK+FUa+WrK
+UGr6tQU7z63mc4dcmLtoP+d5F4XKFNRLWyRj0d+zCU5MGCzrnW7IFOxMn30CQEtv
+4N3K/C5mtLmZM9+npChxfBKs2l2OJAFwFjnhcUs3T5jMTq2NTlKRRRXppUwREjJ0
+ryb15pbiB7C0/Bz/L4MCQC1AOKKjnqQEpINatjZLkyay0bXBih9GXovz3T1eAxaS
+QOEzIC+hGjX+2x1z5jUwwKCgjVUaZdrx470SMJM2Js8=
 -----END RSA PRIVATE KEY-----';
 
+// 公钥一般存放在登录页面中的一个隐藏域中，但是请注意：公钥和私钥一定要配对，且必须保证私钥的安全
 $public_key = '-----BEGIN PUBLIC KEY-----
-MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC3//sR2tXw0wrC2DySx8vNGlqt
-3Y7ldU9+LBLI6e1KS5lfc5jlTGF7KBTSkCHBM3ouEHWqp1ZJ85iJe59aF5gIB2kl
-Bd6h4wrbbHA2XE1sq21ykja/Gqx7/IRia3zQfxGv/qEkyGOx+XALVoOlZqDwh76o
-2n1vP1D+tD3amHsK7QIDAQAB
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCBWNoG5LJ3u44Gs8PWs1MaNUQQ
++mOmh+9zWdzSt3ORbmfCDvU+ssW/6QTTgXvWWx7+Wzq/a4fCCQp72zSqXeVhWkTV
+ct9Hyp/iMo5K6qOEK76z9z+tP/u99X6qazeXGVMWKkPiyZT4mKAGd/U8Mph9Z1Z5
+kOluA7g7heq8PPlE9wIDAQAB
 -----END PUBLIC KEY-----';
 
-//echo $private_key;
-$pi_key =  openssl_pkey_get_private($private_key);//这个函数可用来判断私钥是否是可用的，可用返回资源id Resource id
-$pu_key = openssl_pkey_get_public($public_key);//这个函数可用来判断公钥是否是可用的
-print_r($pi_key);echo "\n";
-print_r($pu_key);echo "\n";
+/**
+ * 使用PHP OpenSSL时，最好先看看手册，了解如何开启OpenSSL 和 其中的一些方法的使用
+ *  具体如何使用这里不做赘述，大家去看看PHP手册，什么都就解决了
+ */ 
+$pi_key =  openssl_pkey_get_private($private_key);//这个函数可用来判断私钥是否是可用的，可用返回资源id Resource id  
+$pu_key = openssl_pkey_get_public($public_key);//这个函数可用来判断公钥是否是可用的  
 
+$decrypted = "";  
+openssl_private_decrypt(base64_decode($input['username']),$decrypted,$pi_key);//私钥解密  
+// 这里的这个 $decrypted就是解密客户端发送过来的用户名，至于后续连接数据库验证登录信息的代码，这里也就省略了
+echo json_encode($decrypted);
 
-$data = "aassssasssddd";//原始数据
-$encrypted = ""; 
-$decrypted = ""; 
-
-echo "source data:",$data,"\n";
-
-echo "private key encrypt:\n";
-
-openssl_private_encrypt($data,$encrypted,$pi_key);//私钥加密
-$encrypted = base64_encode($encrypted);//加密后的内容通常含有特殊字符，需要编码转换下，在网络间通过url传输时要注意base64编码是否是url安全的
-echo $encrypted,"\n";
-
-echo "public key decrypt:\n";
-
-openssl_public_decrypt(base64_decode($encrypted),$decrypted,$pu_key);//私钥加密的内容通过公钥可用解密出来
-echo $decrypted,"\n";
-
-echo "---------------------------------------\n";
-echo "public key encrypt:\n";
-
-openssl_public_encrypt($data,$encrypted,$pu_key);//公钥加密
-$encrypted = base64_encode($encrypted);
-echo $encrypted,"\n";
-
-echo "private key decrypt:\n";
-openssl_private_decrypt(base64_decode($encrypted),$decrypted,$pi_key);//私钥解密
-echo $decrypted,"\n";
   
   ```
 

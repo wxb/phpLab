@@ -57,3 +57,9 @@
 
 
   ```
+
+
+###Note and Tips
+  1. ['PHPExcel中关于列名换算'](https://github.com/wxb/php-code/blob/master/phpexcel/PHPExcel%E7%94%9F%E6%88%90excel%E5%88%97%E5%90%8D%E6%96%B9%E6%B3%95.md)
+
+

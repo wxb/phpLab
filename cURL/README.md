@@ -31,6 +31,10 @@ function request_api($reqUrl, $dataArr=null, $option=null){
 ```
 
 **cURL方式**
+
+php中`cURL`全称是 `client Url library`。PHP支持的由Daniel Stenberg创建的libcurl库允许你与各种的服务器使用各种类型的协议进行连接和通讯。libcurl目前支持http、https、ftp、gopher、telnet、dict、file和ldap协议。libcurl同时也支持HTTPS认证、HTTP POST、HTTP PUT、 FTP 上传(这个也能通过PHP的FTP扩展完成)、HTTP 基于表单的上传、代理、cookies和用户名+密码的认证。    
+`cURL`并不是默认编译到PHP扩展中，需要自行编译安装
+
 ```php
 /**
  * +----------------------------------------------------------------------

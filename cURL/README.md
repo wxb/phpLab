@@ -182,3 +182,15 @@ class Request{
     }
 }
 ```
+
+**cURL--登录**    
+![image](https://github.com/wxb/php-code/blob/master/cURL/001.jpg)  
+
+**cURL--FTP下载文件**     
+![image](https://github.com/wxb/php-code/blob/master/cURL/002.jpg)   
+
+**cURL--ftp上传文件**              
+![image](https://github.com/wxb/php-code/blob/master/cURL/003.jpg)   
+
+**cURL--下载https文件**  
+![image](https://github.com/wxb/php-code/blob/master/cURL/004.jpg)

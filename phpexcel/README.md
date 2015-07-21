@@ -61,6 +61,7 @@
 
 ###Note and Tips
   * [PHPExcel转换excel列名方法](https://github.com/wxb/php-code/blob/master/phpexcel/tips/PHPExcel%E7%94%9F%E6%88%90excel%E5%88%97%E5%90%8D%E6%96%B9%E6%B3%95.md)  
-  * [关于PHPExcel导出的excel在打开时出现'包含不可读取内容'？](https://github.com/wxb/php-code/blob/master/phpexcel/tips/PHPExcel%E5%AF%BC%E5%87%BA%E7%9A%84excel%E5%9C%A8%E6%89%93%E5%BC%80%E6%97%B6%E5%87%BA%E7%8E%B0'%E5%8C%85%E5%90%AB%E4%B8%8D%E5%8F%AF%E8%AF%BB%E5%8F%96%E5%86%85%E5%AE%B9'.md)
+  * [关于PHPExcel导出的excel在打开时出现'包含不可读取内容'？](https://github.com/wxb/php-code/blob/master/phpexcel/tips/PHPExcel%E5%AF%BC%E5%87%BA%E7%9A%84excel%E5%9C%A8%E6%89%93%E5%BC%80%E6%97%B6%E5%87%BA%E7%8E%B0'%E5%8C%85%E5%90%AB%E4%B8%8D%E5%8F%AF%E8%AF%BB%E5%8F%96%E5%86%85%E5%AE%B9'.md)    
+  * [PHPExcel中ob_end_clean()的巧妙使用](https://github.com/wxb/php-code/blob/master/phpexcel/tips/PHPExcel%E4%B8%ADob_end_clean()%E7%9A%84%E5%B7%A7%E5%A6%99%E4%BD%BF%E7%94%A8.md)
 
 

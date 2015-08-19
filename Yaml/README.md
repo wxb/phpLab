@@ -17,4 +17,5 @@
 > 7. 易于使用
 
 ### Yaml概述
+本图摘自K.K Playin' With Web的[博客](http://www.cnblogs.com/chwkai/archive/2009/03/01/249924.html)   
 ![初始Yaml](YAML-MAP.jpg)

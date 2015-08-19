@@ -19,3 +19,8 @@
 ### Yaml概述
 本图摘自K.K Playin' With Web的[博客](http://www.cnblogs.com/chwkai/archive/2009/03/01/249924.html)   
 ![初始Yaml](YAML-MAP.jpg)
+
+### PHP中安装Yaml扩展
+* PHP手册关于[Yaml扩展](http://php.net/manual/zh/book.yaml.php)   
+* PHP安装Yaml扩展请详细参考上面PHP手册中的说明，这里只做简要介绍：
+  1. Yaml通过[LibYAML library ](http://pyyaml.org/wiki/LibYAML) 来解析和编码，所以首先需要安装**LibYAML**

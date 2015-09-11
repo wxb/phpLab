@@ -122,3 +122,27 @@ print_r($arr);
       [6] => this is null
   )
 ```
+
+
+```php
+<?php
+
+// your code goes here
+$array1 = array("a"=>1, "b"=>2, "c"=>'  sdf', "d"=>4, "e"=>5);
+array_walk($array1, function(&$var)
+{
+    // returns whether the input integer is odd
+    $var = trim($var);
+});
+
+print_r($array1);
+------
+Array
+(
+    [a] => 1
+    [b] => 2
+    [c] => sdf
+    [d] => 4
+    [e] => 5
+)
+```

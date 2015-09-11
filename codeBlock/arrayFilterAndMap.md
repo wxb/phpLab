@@ -123,19 +123,15 @@ print_r($arr);
   )
 ```
 
-
+### 对于POST提交数据去除两边空格
 ```php
 <?php
 
 // your code goes here
-$array1 = array("a"=>1, "b"=>2, "c"=>'  sdf', "d"=>4, "e"=>5);
-array_walk($array1, function(&$var)
-{
-    // returns whether the input integer is odd
-    $var = trim($var);
-});
+$array = array("a"=>1, "b"=>2, "c"=>'  sdf', "d"=>4, "e"=>5);
+array_walk($array, function(&$var){$var = trim($var);});
 
-print_r($array1);
+print_r($array);
 ------
 Array
 (

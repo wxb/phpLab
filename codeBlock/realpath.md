@@ -13,7 +13,8 @@ realpath() 扩展所有的符号连接并且处理输入的 path 中的 '/./', '
 ### 规范任何路径   
 对于某些不存在的路径，使用下面函数可以规范化--[摘自php手册](http://php.net/manual/zh/function.realpath.php#112367)
 ```php
-Needed a method to normalize a virtual path that could handle .. references that go beyond the initial folder reference. So I created the following.
+Needed a method to normalize a virtual path that could handle .. references that go beyond the initial folder reference. 
+So I created the following.
 <?php
 
 function normalizePath($path)

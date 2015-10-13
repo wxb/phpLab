@@ -35,7 +35,7 @@ function normalizePath($path)
             {
                 if($test == '..')
                     $parts[] = $test;
-
+        
                 if($test == '..' || $test == '')
                     $parts[] = $segment;
             }

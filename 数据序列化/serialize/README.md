@@ -4,7 +4,7 @@ serialize — 产生一个可存储的值的表示。
 
 ## 函数原型
 
-```
+```php
 string serialize ( mixed $value )
 
 ```
@@ -68,6 +68,14 @@ serialize 并不适合存储在数据库中，因为这阻止了应用的可以�
 > That's not to say serialize() is useless. It's not... A good place to use it may be a cache file that contains the result of a data intensive operation, for instance. There are tons of others... Just don't abuse serialize because the next guy who comes along will have a maintenance or migration nightmare.
 
 serialize 更适合用在缓存文件(cache file)来包含一些数据操作的结果   
+
+## unserialize
+
+```php
+mixed unserialize ( string $str )
+```
+
+unserialize() 对单一的已序列化的变量进行操作，将其转换回 PHP 的值。   
 
 
 

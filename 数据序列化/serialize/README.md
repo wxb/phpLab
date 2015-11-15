@@ -40,16 +40,16 @@ serialize() 返回字符串，此字符串包含了表示 value 的**字节流**
 * 注意：   
     字符串的值总是在双引号中    
     数组的键值总是 整型或者字符串；不能用数组作为另一个数组的某个键的键值，
-    > Array keys are always integers or strings
-    "null => 'value'" equates to 's:0:"";s:5:"value";',
-    "true => 'value'" equates to 'i:1;s:5:"value";',
-    "false => 'value'" equates to 'i:0;s:5:"value";',
+    > Array keys are always integers or strings     
+    "null => 'value'" equates to 's:0:"";s:5:"value";',    
+    "true => 'value'" equates to 'i:1;s:5:"value";',     
+    "false => 'value'" equates to 'i:0;s:5:"value";',     
     "array(whatever the contents) => 'value'" equates to an "illegal offset type" warning because you can't use an
-    array as a key; however, if you use a variable containing an array as a key, it will equate to 's:5:"Array";s:5:"value";',
-     and
-    attempting to use an object as a key will result in the same behavior as using an array will.
+    array as a key; however, if you use a variable containing an array as a key, it will equate to 's:5:"Array";s:5:"value";',     
+     and      
+    attempting to use an object as a key will result in the same behavior as using an array will.     
    
-* 实例 － example.php     
+* 实例 － [example.php](example.php)     
     需要说明的是，serialize会保存变量的结构，所以在对一个被serialize的变量执行unserialize后，等到的变量依然可以执行原对象的所有方法和属性，也就是说这个unserialize后的对象和serialize之前的一模一样。    
     
     输出：    

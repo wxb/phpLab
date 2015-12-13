@@ -1,5 +1,7 @@
-// ´¦ÀíÉÏ´«ÎÄ¼şºÍÍ¼Æ¬ĞÅÏ¢Êı×é£¬Ö»±£´æÎÄ¼şÃûºÍÎÄ¼şÂ·¾¶
+// å¤„ç†ä¸Šä¼ æ–‡ä»¶å’Œå›¾ç‰‡ä¿¡æ¯æ•°ç»„ï¼Œåªä¿å­˜æ–‡ä»¶åå’Œæ–‡ä»¶è·¯å¾„   
+```php
         $upData['supplyImg'] = array_map(function($v){
             $key = array('name'=>0, 'path'=>0);
             return array_intersect_key($v, $key);
         }, $upData['supplyImg']);
+```

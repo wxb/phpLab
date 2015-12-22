@@ -27,7 +27,7 @@ Model 是thinkPHP的MVC中的模型层(M),简单的来说就是对数据库数�
 * 视图（view）：这个不用说了，就是使用模板引擎渲染输出。但是请注意：不要php和模板引擎的语法混合使用，建议尽量使用模板引擎的语法。   
 
 ## 图示
-![MVC](thinkPHP的mvc.svg)
+![MVC](thinkPHP的mvc.png)
 
 ## 总结
 

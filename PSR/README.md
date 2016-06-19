@@ -3,9 +3,9 @@ PHP编码规范 - PSR
 本文档是PHP互操作性框架制定小组（[PHP-FIG][] :PHP Framework Interoperability Group）制定的PHP编码规范（[PSR][]:Proposing a Standards Recommendation）
 
 
+* [PHP-FIG官方](http://www.php-fig.org/psr/) | [GitHub](https://github.com/php-fig)
 
-
-本文档摘自-[PHP-FIG PSR中文版](https://github.com/PizzaLiu/PHP-FIG)
+* 本文档摘自-[PHP-FIG PSR中文版](https://github.com/PizzaLiu/PHP-FIG)
 
 
 
@@ -1414,3 +1414,15 @@ class LogLevel
 [PSR-0]: https://github.com/PizzaLiu/PHP-FIG/blob/master/PSR-0-cn.md
 [相关实例]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader-examples.md
 
+
+----
+
+# PSR-6: Caching Interface
+
+[PSR-6-cache](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-6-cache.md)
+
+
+
+# PSR-7: HTTP message interfaces
+
+[PSR-7-http-message](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-7-http-message.md)

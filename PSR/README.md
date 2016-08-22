@@ -6,6 +6,7 @@ PHP编码规范 - PSR
 * [PHP-FIG官方](http://www.php-fig.org/psr/) | [GitHub](https://github.com/php-fig)
 
 * 本文档摘自-[PHP-FIG PSR中文版](https://github.com/PizzaLiu/PHP-FIG)
+* 更加详细资料请点这里-[PHP 标准规范](https://psr.phphub.org/)
 
 
 

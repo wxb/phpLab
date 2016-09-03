@@ -9,8 +9,17 @@
 
 ##常用类库-phpLib
 
+### HttpLib
 * Http 发送请求类库 [Requests](https://github.com/rmccue/Requests) 
+
+### 数据序列化
 * 生成指定随机数类库 [RandomLib](https://github.com/ircmaxell/RandomLib)  
+
+### 密码技术
 * 密码生成类库 [Phpass](https://github.com/rchouinard/phpass) 
 * 密码生成类库 [PasswordHash](http://www.openwall.com/phpass/) 
+
+### 缓存技术
+* redis队列php类库 [php-resque](https://github.com/chrisboulton/php-resque)
+
 

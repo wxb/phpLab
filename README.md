@@ -7,7 +7,10 @@
 * PHP开发过程中积累各种可复用代码
 * PHP工作中进行的一些源码分析记录
 
-##联系我
-[博客](http://www.cnblogs.com/wxb0328/)
+##常用类库-phpLib
 
+* Http 发送请求类库 [Requests](https://github.com/rmccue/Requests) 
+* 生成指定随机数类库 [RandomLib](https://github.com/ircmaxell/RandomLib)  
+* 密码生成类库 [Phpass](https://github.com/rchouinard/phpass) 
+* 密码生成类库 [PasswordHash](http://www.openwall.com/phpass/) 
 

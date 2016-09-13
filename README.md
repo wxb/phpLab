@@ -21,5 +21,6 @@
 
 ### 缓存技术
 * redis队列php类库 [php-resque](https://github.com/chrisboulton/php-resque)
+* memcached类库 [php-memcached](https://github.com/wxb/phpLab/tree/master/%E7%BC%93%E5%AD%98%E6%8A%80%E6%9C%AF/memcache)
 
 

@@ -1,6 +1,3 @@
-
-
-```php
 <?PHP
 namespace Index\Common;
 
@@ -64,7 +61,3 @@ class Memcachedzx {
         return urlencode($key);
     }
 }
-
-
-
-```

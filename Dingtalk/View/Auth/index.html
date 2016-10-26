@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="__STATIC__/prompt.css" type="text/css">
+</head>
+<body>
+<section id=tipBox>
+
+    <!--  -->
+    <!-- 成功提示-->
+    <div class='success' id="success" style="display: none;">
+        <div class='icon'>
+            <div class='line_short'></div>
+            <div class='line_long'></div>
+        </div>
+        <div class='dec_txt'>成功</div>
+        <div class='dec_txt'>页面即将自动跳转</a> 等待时间： <b id="wait">3</b></div>
+    </div>
+    <!--失败提示-->
+    <div class='lose' id="fail" style="display: none;">
+        <div class='icon'>
+            <div class='icon_box'>
+                <div class='line_left'></div>
+                <div class='line_right'></div>
+            </div>
+        </div>
+        <div class='dec_txt' id="fail_info"></div>
+    </div>
+</section>
+
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://g.alicdn.com/ilw/ding/0.9.2/scripts/dingtalk.js"></script>
+<script type="text/javascript" src="__STATIC__/plugins.bundle.js"></script>
+<script type="text/javascript" src="__STATIC__/prompt.js"></script>
+<script type="text/javascript">
+
+    function sucDisplay(redirect){
+        $('#success').show();
+        var wait = document.getElementById('wait');
+        var interval = setInterval(function(){
+            var time = --wait.innerHTML;
+            if(time <= 0) {
+                location.href = redirect;
+                clearInterval(interval);
+            };
+        }, 1000);
+    }
+
+    function failDispaly(info){
+        $('#fail').show();
+        $('#fail_info').html(info);
+    }
+
+    var _config = {$dingtalk_config};
+
+    dd.config({
+        agentId: _config.agentId,
+        corpId: _config.corpId,
+        timeStamp: _config.timeStamp,
+        nonceStr: _config.nonceStr,
+        signature: _config.signature,
+        jsApiList: [
+            'runtime.info',
+            'device.notification.prompt',
+            'biz.chat.pickConversation',
+            'device.notification.confirm',
+            'device.notification.alert',
+            'device.notification.prompt',
+            'biz.chat.open',
+            'biz.util.open',
+            'biz.user.get',
+            'biz.contact.choose',
+            'biz.telephone.call',
+            'biz.ding.post']
+    });
+    dd.userid=0;
+    dd.ready(function() {
+        dd.runtime.permission.requestAuthCode({
+            corpId: _config.corpId, //企业id
+            onSuccess: function (info) {
+                var loginUrl = "{:U('/dingtalk.php/Auth/login')}";
+                sucDisplay(loginUrl+"?code="+info.code);
+            },
+            onFail: function (err) {
+                failDispaly(JSON.stringify(err));
+            }
+        });
+
+    });
+
+    dd.error(function(err) {
+        failDispaly(JSON.stringify(err));
+    });
+</script>
+</html>

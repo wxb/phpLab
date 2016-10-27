@@ -13,9 +13,6 @@ return array(
     'DB_PREFIX'=>'',// 数据库表前缀
     'DB_CHARSET'=>'utf8',// 数据库字符集
 
-	'TMPL_PARSE_STRING'=> array(
-		'__STATIC__' => __ROOT__.'/static/build',
-	),
 
     //默认错误跳转对应的模板文件
     'TMPL_ACTION_ERROR' => 'Common/dispatch_jump',

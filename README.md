@@ -24,6 +24,12 @@
 * php的redis操作扩展 [phpredis](https://github.com/phpredis/phpredis)
 * memcached类库 [php-memcached](https://github.com/wxb/phpLab/tree/master/%E7%BC%93%E5%AD%98%E6%8A%80%E6%9C%AF/memcache)
 
+### 导入导出
+* 表格导出jquery类库 [tableExport](https://github.com/chrisboulton/php-resque)
+* 导出csv格式php类库 [phpcsv](https://github.com/chrisboulton/php-resque)
+* 导出excel格式php类库 [phpexcel](https://github.com/chrisboulton/php-resque)
+
+
 ### API SDK
 * 钉钉微应用 免密登陆SDK实例 [dingtalk](https://github.com/wxb/phpLab/tree/master/Dingtalk)
 

@@ -50,6 +50,8 @@ function quickSort(&$arr, $left, $right, $type='ASC'){
     quickSort($arr, $low+1, $right, $type);
 }
 
+// 测试
 $arr = [3, 4, 2, 6, 1, 0, 9];
 quickSort($arr, 0, count($arr)-1, 'DESC');
+
 print_r($arr);

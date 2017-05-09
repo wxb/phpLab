@@ -1,7 +1,9 @@
 <?php
 
+// 实例化一个swoole对象
 $serv = new Swoole\Http\Server("127.0.0.1", 9502);
 
+// 
 $serv->on('Request', function($request, $response) {
     var_dump($request->get);
     var_dump($request->post);

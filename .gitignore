@@ -1,2 +1,6 @@
 /codeBlock/config.md
 .idea
+Monolog/vendor/
+laravel/app/
+laravel/public/
+laravel/vendor/

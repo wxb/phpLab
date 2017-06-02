@@ -1,0 +1,6 @@
+{
+    "require": {
+        "monolog/monolog": "^1.22",
+        "theorchard/monolog-cascade": "^0.4.1"
+    }
+}

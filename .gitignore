@@ -1,6 +1,5 @@
 /codeBlock/config.md
 .idea
-Monolog/vendor/
+vendor
 laravel/app/
 laravel/public/
-laravel/vendor/

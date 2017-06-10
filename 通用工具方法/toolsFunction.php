@@ -35,7 +35,7 @@
      * param INT $phone
      * date: 2015-7-14
      */
-    function validatePhone($phone) {
+    function validate_phone($phone) {
         if (!is_numeric($phone)) {
             return false;
         }
@@ -148,7 +148,7 @@
      * @param $flag
      * @return array
      */
-    function convertToUnixTime($flag)
+    function convert_to_unixtime($flag)
     {
         $ret = array();
         switch($flag){
@@ -201,9 +201,9 @@
         return $ret;
     }
 
-    function convertToFormatDate($flag, $format='Y-m-d H:i:s')
+    function convert_to_formatdate($flag, $format='Y-m-d H:i:s')
     {
-        $timeArr = convertToUnixTime($flag);
+        $timeArr = convert_to_unixtime($flag);
         $ret = array_map(function($v, $m){
             return date($m, $v);
         }, $timeArr, array($format, $format));
@@ -216,7 +216,7 @@
      * @param $valArr
      * @return array
      */
-    function combineKeyValue($keyArr, $valArr)
+    function combine_key_value($keyArr, $valArr)
     {
         $ret = array();
         foreach($keyArr as $v){
@@ -234,7 +234,7 @@
      * @author wangxb
      * @date 2015-11-06
      */
-    function checkFloat($num, $limit){
+    function check_float($num, $limit){
         if(is_numeric($num)){
             $arr = explode('.', $num);
             if(1 == count($arr)){
@@ -336,7 +336,6 @@
      * 获取今年或明年某个月的时间戳
     * @param  int    $year 年
     * @param  int    $month  月
-
     * @author: wangxb
     * @date  : 2015-12-25
      * @update:
@@ -389,3 +388,29 @@
         $showTime = strtotime($data);
         return $showTime;
     }
+
+    /**
+     * @Function    duration_to_format
+     * @Author      wangxb
+     * @Description 将秒换算成时分秒
+     * @param int $seconds
+     * @param string $format
+     * @return int|string
+     */
+    function duration_to_format($seconds = 0, $format = "%'02d时%'02d分%'02d秒")
+    {
+        $seconds = (int)$seconds;
+        if($seconds == 0)
+        {
+            return 0;
+        }
+        //hour
+        $hour = floor($seconds / 3600);
+
+        $seconds = $seconds % 3600;
+        $minutes = floor($seconds / 60);
+        $seconds = $seconds % 60;
+
+        return sprintf($format, $hour, $minutes, $seconds);
+    }
+

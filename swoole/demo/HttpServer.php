@@ -14,6 +14,7 @@ $serv->on('Request', function($request, $response) {
 
     $response->cookie("User", "Swoole");
     $response->header("X-Server", "Swoole");
+    $response->header('Access-Control-Allow-Origin', '*');
     $response->end("<h1>Hello Swoole!</h1>");
 });
 

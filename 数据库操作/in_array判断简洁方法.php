@@ -1,5 +1,6 @@
     <?php
-    public function update_row($dataArr, $whereArr)
+
+    function update_row($dataArr, $whereArr)
     {
         if(empty($dataArr) || empty($whereArr)) return false;
         $user_fields = array(

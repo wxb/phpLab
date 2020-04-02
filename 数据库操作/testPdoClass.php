@@ -73,6 +73,6 @@ $pdomysql->close();
 // 测试getLastSql()
 echo $pdomysql->getLastSql();
 
-echo 'PdoMysql.Class.php这个类文件只能作为参考，具体在生产中使用时需要详细测试并修改出现的bug'
+echo 'PdoMysql.Class.php这个类文件只能作为参考，具体在生产中使用时需要详细测试并修改出现的bug';
 
 

@@ -15,6 +15,6 @@ $objSheet->setCellValue('A3', '李四')->setCellValue('B3', '1班')->setCellValu
 // 调用这个PHPExcel_IOFactory类中的静态方法createWriter生成指定格式的excel文件
 $objWrite = PHPExcel_IOFactory::createWriter($objPhpExcel, 'Excel2007');
 // 保存文件	
-$objWrite->save('./demo_1.xlsx')
+$objWrite->save('./demo_1.xlsx');
 
 

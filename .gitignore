@@ -3,3 +3,4 @@
 vendor
 laravel/app/
 laravel/public/
+.history

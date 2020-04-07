@@ -1,6 +1,6 @@
 <?php
-define('OSS_ACCESS_ID', 'imZx77PXr2zPVcyV');
-define('OSS_ACCESS_KEY', 'fywXKQpW70OUzW2KM6xBeeOAOrmNlY');
+define('OSS_ACCESS_ID', 'ixxx');
+define('OSS_ACCESS_KEY', 'xxxxxxx');
 define('OSS_ENDPOINT', 'oss-cn-beijing.aliyuncs.com');
 define('OSS_TEST_BUCKET', 'xbmarks');
 
